@@ -1,0 +1,13 @@
+{
+  "setupTasks": ["npm install -g bun", "npm install -g pnpm", "pnpm install", "pnpm run build"],
+  "tasks": {
+    "dessn": {
+      "name": "Dev Server",
+      "command": "cd /home/user/apps/web && bun /home/user/apps/web/dessn/vite.cli.ts",
+      "preview": {
+        "port": 5173
+      },
+      "runAtStart": true
+    }
+  }
+}

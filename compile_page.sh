@@ -1,0 +1,1 @@
+cd /home/user/apps/web && bun /home/user/apps/web/dessn/vite.cli.ts

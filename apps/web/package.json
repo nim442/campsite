@@ -147,10 +147,18 @@
     "@welldone-software/why-did-you-render": "catalog:",
     "autoprefixer": "catalog:",
     "eslint-plugin-storybook": "catalog:",
+    "fast-glob": "^3.3.3",
     "postcss": "catalog:",
     "storybook": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
+    "vite": "^6.2.2",
+    "vite-multiple-assets": "^2.2.5",
+    "vite-plugin-commonjs": "^0.10.4",
+    "vite-plugin-html": "^3.2.2",
+    "vite-plugin-inspect": "^11.0.0",
+    "vite-plugin-ngmi-polyfill": "^0.0.2",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "catalog:"
   },
   "peerDependencies": {

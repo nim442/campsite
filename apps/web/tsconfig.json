@@ -54,6 +54,7 @@
   },
   "extends": "@campsite/tsconfig/nextjs.json",
   "include": [
+    "dessn/**/*",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
