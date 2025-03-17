@@ -1,0 +1,639 @@
+System: You are an expert React developer working on a project that renders preview components.
+
+## Task
+Your task is to fix the errors.
+
+## Role & Capabilities
+- You are a **component error fixing assistant**
+- You can read files, make edits, and use tools to diagnose issues
+- You have access to browser errors and TypeScript errors
+
+## Tools Available
+1. **getFile** (Using tool call) - Read contents of project files
+2. **globTool** (Using tool call) - Find files matching a glob pattern
+3. **grepTool** (Using tool call) - Search for regex patterns in files using ripgrep
+4. **File Editing** (Using xml tags in your response) - Make changes to fix errors using XML format
+
+## File Edit Format
+When you want to edit a file, use this exact XML format:
+
+<file path="path/to/file">
+  <change>
+    <description>Brief explanation of what you're changing</description>
+    <content>
+// Your complete file content here
+    </content>
+  </change>
+</file>
+
+## Important Rules
+1. Only update a file if you know its contents. Use getFile tool to read first.
+2. Most errors can be fixed by updating the preview file. Only update other files if necessary.
+3. Provide complete file content - do not use placeholders or ellipses.
+4. Always include necessary imports and dependencies.
+5. When making changes:
+   - Add all required import statements
+   - Include complete component code
+   - Ensure proper TypeScript types
+   - Handle all edge cases
+6. It is very important that the component is rendered exactly as it is writting in the codebase. Do not mock or fake the component (because then it may look different) but you can change the component code to fix the error.
+7. DO NOT MOCK OR FAKE THE COMPONENT ITSELF. KEEP TRYING UNTIL THE ERROR IS FIXED BUT YOU MUST NOT CREATE A FAKE SIMPLIFIED VERSION OF THE COMPONENT.
+8. DO NOT REMOVE CSS STYLES. Its important that the component looks exactly as it is in the codebase and removing css will make it look different.
+
+
+## Error Handling Process
+1. Read and understand the error message (TypeScript or runtime errors)
+2. Use getFile to examine relevant files
+3. Make targeted fixes using the XML format
+4. If the error is caused by the fact that a provider is missing. In these cases, find the provider and add it to the preview file.
+5. If the error persists, try different fixes. Sometimes the error is caused by external dependencies that we dont' have access to. In those cases, you can try to fix the error by mocking,removing or try catching.
+6. Since we are running this project in a preview environemnt, no process.env is available. You can fix this by hardcoding the variables in the file they are defined in.
+7. REMEMBER, your resonse must have <file> tags with the file path and content if you want to edit a file.
+8. DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+User: An error occurred when rendering the component route at ResourceMentionList-c6e9e1c2.tsx
+Error:
+
+# Error 1
+
+## Error Message
+RangeError: Schema is missing its top node type ('doc')RangeError: Schema is missing its top node type ('doc')
+
+## Stack Trace
+```
+    at _NodeType.compile (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:2233:13)
+    at new Schema (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:2335:137)
+    at getSchemaByResolvedExtensions (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:627:10)
+    at new _ExtensionManager (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:1020:19)
+    at Editor.createExtensionManager (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:3711:29)
+    at new Editor (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:3571:10)
+    at ComponentPreview (/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx:13:18)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at updateFunctionComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14605:28)
+    at mountLazyComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14856:23)
+```
+
+## Component Stack
+```
+
+    at ComponentPreview (/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx:6:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:53:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ResourceMentionList } from '../../components/MarkdownEditor/ResourceMentionList';
+import { Editor } from '@tiptap/core';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    }
+  });
+
+  // Create a mock editor instance
+  const editor = new Editor({
+    extensions: [],
+    content: '',
+    editable: true
+  });
+
+  return (
+    <ResourceMentionList 
+      editor={editor}
+      modal={state.modal.value}
+    />
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I'll help fix this error. The error indicates that the Editor schema is missing its top node type ('doc'). This is because we need to provide the required extensions for the TipTap editor to work properly.
+
+Let me first check the actual ResourceMentionList component to see what extensions it expects:
+
+
+Assistant: I see that the component uses the ResourceMention extension from @campsite/editor. Let me check if we can find what extensions are needed:
+
+
+Assistant: Based on the error and the component code, we need to properly configure the TipTap editor with the required extensions. Let's update the preview file to include the necessary extensions:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx">
+<change>
+<description>Add required TipTap extensions and proper configuration</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ResourceMentionList } from '../../components/MarkdownEditor/ResourceMentionList';
+import { Editor } from '@tiptap/core';
+import Document from '@tiptap/extension-document';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import { ResourceMention } from '@campsite/editor';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    }
+  });
+
+  // Create an editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      Document,
+      Paragraph,
+      Text,
+      ResourceMention
+    ],
+    content: '<p></p>',
+    editable: true
+  });
+
+  return (
+    <ResourceMentionList 
+      editor={editor}
+      modal={state.modal.value}
+    />
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Added the essential TipTap extensions: Document (required for the 'doc' node type), Paragraph, and Text
+2. Added the ResourceMention extension from @campsite/editor which is required by the component
+3. Set proper initial content with an empty paragraph
+4. Kept all the existing functionality intact
+
+This should resolve the "Schema is missing its top node type ('doc')" error while maintaining the component's original functionality. The component will still look and behave exactly as it does in the main codebase, we've just properly configured the editor instance it needs to function.
+
+Let me know if you encounter any other errors after this change.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: TypeScript errors found in the component at ResourceMentionList-c6e9e1c2.tsx
+Errors:
+TypeScript Errors:
+Line 5, Column 22: Cannot find module '@tiptap/extension-document' or its corresponding type declarations.
+Line 6, Column 23: Cannot find module '@tiptap/extension-paragraph' or its corresponding type declarations.
+Line 7, Column 18: Cannot find module '@tiptap/extension-text' or its corresponding type declarations.
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ResourceMentionList } from '../../components/MarkdownEditor/ResourceMentionList';
+import { Editor } from '@tiptap/core';
+import Document from '@tiptap/extension-document';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import { ResourceMention } from '@campsite/editor';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    }
+  });
+
+  // Create an editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      Document,
+      Paragraph,
+      Text,
+      ResourceMention
+    ],
+    content: '<p></p>',
+    editable: true
+  });
+
+  return (
+    <ResourceMentionList 
+      editor={editor}
+      modal={state.modal.value}
+    />
+  );
+}
+</file>
+
+Please fix the TypeScript errors. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: Let me check the package.json to see what TipTap packages are actually available in the project:
+
+
+Assistant: Let me check the web app's package.json:
+
+
+Assistant: I see that we have `@tiptap/core` but we need to install the basic extensions. Let's try a different approach using the StarterKit extension which includes all the basic extensions we need:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx">
+<change>
+<description>Use StarterKit extension instead of individual extensions</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ResourceMentionList } from '../../components/MarkdownEditor/ResourceMentionList';
+import { Editor } from '@tiptap/core';
+import { ResourceMention } from '@campsite/editor';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    }
+  });
+
+  // Create an editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      ResourceMention
+    ],
+    content: '',
+    editable: true,
+    // Add schema configuration
+    schema: {
+      nodes: {
+        doc: {
+          content: 'block+'
+        },
+        paragraph: {
+          content: 'inline*',
+          group: 'block',
+          parseDOM: [{ tag: 'p' }],
+          toDOM: () => ['p', 0]
+        },
+        text: {
+          group: 'inline'
+        }
+      }
+    }
+  });
+
+  return (
+    <ResourceMentionList 
+      editor={editor}
+      modal={state.modal.value}
+    />
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Removed the individual extension imports that were causing TypeScript errors
+2. Added a basic schema configuration directly in the editor options that includes the required 'doc', 'paragraph', and 'text' nodes
+3. Kept the ResourceMention extension which is required for the component
+4. Maintained all other functionality
+
+This should resolve the TypeScript errors while keeping the component's functionality intact. The component will still look and behave exactly as it does in the main codebase, we've just configured the editor instance differently to avoid dependency issues.
+
+Let me know if you encounter any other errors after this change.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at ResourceMentionList-c6e9e1c2.tsx
+Error:
+
+# Error 1
+
+## Error Message
+RangeError: Schema is missing its top node type ('doc')RangeError: Schema is missing its top node type ('doc')
+
+## Stack Trace
+```
+    at _NodeType.compile (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:2233:13)
+    at new Schema (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:2335:137)
+    at getSchemaByResolvedExtensions (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:627:10)
+    at new _ExtensionManager (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:1020:19)
+    at Editor.createExtensionManager (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:3711:29)
+    at new Editor (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:3571:10)
+    at ComponentPreview (/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx:14:18)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at updateFunctionComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14605:28)
+    at mountLazyComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14856:23)
+```
+
+## Component Stack
+```
+
+    at ComponentPreview (/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx:7:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:53:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ResourceMentionList } from '../../components/MarkdownEditor/ResourceMentionList';
+import { Editor } from '@tiptap/core';
+import { ResourceMention } from '@campsite/editor';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    }
+  });
+
+  // Create an editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      ResourceMention
+    ],
+    content: '',
+    editable: true,
+    // Add schema configuration
+    schema: {
+      nodes: {
+        doc: {
+          content: 'block+'
+        },
+        paragraph: {
+          content: 'inline*',
+          group: 'block',
+          parseDOM: [{ tag: 'p' }],
+          toDOM: () => ['p', 0]
+        },
+        text: {
+          group: 'inline'
+        }
+      }
+    }
+  });
+
+  return (
+    <ResourceMentionList 
+      editor={editor}
+      modal={state.modal.value}
+    />
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: Let me check how the editor is configured in the actual codebase. I'll look for files that might show how the editor is set up:
+
+
+Assistant: Let me check the editor configuration in the @campsite/editor package:
+
+
+Assistant: I see there's a StarterKit extension available in the @campsite/editor package. Let's use that along with the ResourceMention extension:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx">
+<change>
+<description>Use StarterKit from @campsite/editor</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ResourceMentionList } from '../../components/MarkdownEditor/ResourceMentionList';
+import { Editor } from '@tiptap/core';
+import { ResourceMention, StarterKit } from '@campsite/editor';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    }
+  });
+
+  // Create an editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      StarterKit,
+      ResourceMention
+    ],
+    content: '<p></p>',
+    editable: true
+  });
+
+  return (
+    <ResourceMentionList 
+      editor={editor}
+      modal={state.modal.value}
+    />
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Imported StarterKit from @campsite/editor which should include all the basic nodes and marks needed
+2. Added StarterKit to the extensions array
+3. Removed the manual schema configuration since StarterKit will provide the proper schema
+4. Set initial content to an empty paragraph
+5. Kept the ResourceMention extension which is required for the component's functionality
+
+This should resolve the "Schema is missing its top node type ('doc')" error while maintaining the component's original functionality. The component will still look and behave exactly as it does in the main codebase, we're just using the proper extension setup from @campsite/editor.
+
+Let me know if you encounter any other errors after this change.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at ResourceMentionList-c6e9e1c2.tsx
+Error:
+
+# Error 1
+
+## Error Message
+RangeError: Schema is missing its top node type ('doc')RangeError: Schema is missing its top node type ('doc')
+
+## Stack Trace
+```
+    at _NodeType.compile (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:2233:13)
+    at new Schema (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:2335:137)
+    at getSchemaByResolvedExtensions (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:627:10)
+    at new _ExtensionManager (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:1020:19)
+    at Editor.createExtensionManager (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:3711:29)
+    at new Editor (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:3571:10)
+    at ComponentPreview (/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx:14:18)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at updateFunctionComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14605:28)
+    at mountLazyComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14856:23)
+```
+
+## Component Stack
+```
+
+    at ComponentPreview (/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx:7:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:53:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ResourceMentionList } from '../../components/MarkdownEditor/ResourceMentionList';
+import { Editor } from '@tiptap/core';
+import { ResourceMention, StarterKit } from '@campsite/editor';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    }
+  });
+
+  // Create an editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      StarterKit,
+      ResourceMention
+    ],
+    content: '<p></p>',
+    editable: true
+  });
+
+  return (
+    <ResourceMentionList 
+      editor={editor}
+      modal={state.modal.value}
+    />
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: Let me check how the ResourceMentionList is used in the actual codebase to see how the editor is configured:
+
+
+Assistant: Let me check NoteContent.tsx to see how they configure the editor:
+
+
+Assistant: Let me check the useNoteEditor hook to see how they configure the editor:
+
+
+Assistant: Let me check the MarkdownEditor component since it also uses ResourceMentionList:
+
+
+Assistant: I see that they're using `getMarkdownExtensions` from @campsite/editor. Let me try using that:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx">
+<change>
+<description>Use getMarkdownExtensions from @campsite/editor</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ResourceMentionList } from '../../components/MarkdownEditor/ResourceMentionList';
+import { Editor } from '@tiptap/core';
+import { getMarkdownExtensions } from '@campsite/editor';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    }
+  });
+
+  // Create an editor instance with required extensions
+  const editor = new Editor({
+    extensions: getMarkdownExtensions({
+      resourceMention: {
+        addNodeView() {
+          return null; // We don't need the node view for the mention list
+        }
+      }
+    }),
+    content: '<p></p>',
+    editable: true
+  });
+
+  return (
+    <ResourceMentionList 
+      editor={editor}
+      modal={state.modal.value}
+    />
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Imported getMarkdownExtensions from @campsite/editor which contains all the necessary extensions
+2. Used getMarkdownExtensions to get the proper extension configuration
+3. Added resourceMention configuration but with a null node view since we don't need it for the mention list
+4. Kept the editor instance and component rendering the same
+
+This should resolve the "Schema is missing its top node type ('doc')" error while maintaining the component's original functionality. The component will still look and behave exactly as it does in the main codebase, we're just using the proper extension setup from @campsite/editor.
+
+Let me know if you encounter any other errors after this change.Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx
+
+All changes applied successfully. Checking for errors...
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ResourceMentionList-c6e9e1c2.tsx
+
+All changes applied successfully. Checking for errors...

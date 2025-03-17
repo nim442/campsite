@@ -2,20 +2,48 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/contexts/*": ["contexts/*"],
-      "@/atoms/*": ["atoms/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/pages/*": ["pages/*"],
-      "@/utils/*": ["utils/*"],
-      "@campsite/editor/*": ["../../packages/editor/src/*"],
-      "@campsite/editor": ["../../packages/editor/src/index"],
-      "@campsite/config/*": ["../../packages/config/src/*"],
-      "@campsite/config": ["../../packages/config/src/index"],
-      "@campsite/ui/*": ["../../packages/ui/src/*"],
-      "@campsite/ui": ["../../packages/ui/src/index"],
-      "@campsite/types/*": ["../../packages/types/*"],
-      "@campsite/types": ["../../packages/types/index"]
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/contexts/*": [
+        "contexts/*"
+      ],
+      "@/atoms/*": [
+        "atoms/*"
+      ],
+      "@/hooks/*": [
+        "hooks/*"
+      ],
+      "@/pages/*": [
+        "pages/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ],
+      "@campsite/editor/*": [
+        "../../packages/editor/src/*"
+      ],
+      "@campsite/editor": [
+        "../../packages/editor/src/index"
+      ],
+      "@campsite/config/*": [
+        "../../packages/config/src/*"
+      ],
+      "@campsite/config": [
+        "../../packages/config/src/index"
+      ],
+      "@campsite/ui/*": [
+        "../../packages/ui/src/*"
+      ],
+      "@campsite/ui": [
+        "../../packages/ui/src/index"
+      ],
+      "@campsite/types/*": [
+        "../../packages/types/*"
+      ],
+      "@campsite/types": [
+        "../../packages/types/index"
+      ]
     },
     "plugins": [
       {
@@ -25,6 +53,16 @@
     "strictNullChecks": true
   },
   "extends": "@campsite/tsconfig/nextjs.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "vitest.config.mts", "**/*.config.js", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "vitest.config.mts",
+    "**/*.config.js",
+    ".next/types/**/*.ts",
+    ".temp/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

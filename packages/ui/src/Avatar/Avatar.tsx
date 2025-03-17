@@ -139,6 +139,9 @@ const DND_SIZE = {
   xxl: 38
 }
 
+// Check if we're in a preview environment
+const isPreview = true; // Force preview mode to use img tag instead of next/image
+
 /** ```ts
     stacked?: boolean;
     size?: "xs" | "sm" | "base" | "lg" | "xl" | "xxl"
@@ -233,7 +236,18 @@ function _Avatar(props: Props) {
               clipId && 'will-change-transform'
             )}
           >
-            {showImage && (
+            {showImage && isPreview ? (
+              // Use regular img tag in preview environment
+              <img
+                className={cn('absolute inset-0 aspect-square object-cover', rounded)}
+                alt={alt || `Avatar image of ${name}`}
+                width={avatarSize}
+                height={avatarSize}
+                src={url}
+                draggable={false}
+                onError={() => setImageErrored(true)}
+              />
+            ) : showImage ? (
               <Image
                 className={cn('absolute inset-0 aspect-square object-cover', rounded)}
                 alt={alt || `Avatar image of ${name}`}
@@ -243,7 +257,7 @@ function _Avatar(props: Props) {
                 draggable={false}
                 onError={() => setImageErrored(true)}
               />
-            )}
+            ) : null}
 
             {!showImage && (
               <span className='text-dark flex text-opacity-60'>

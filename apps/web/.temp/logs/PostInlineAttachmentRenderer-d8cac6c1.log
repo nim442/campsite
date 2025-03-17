@@ -1,0 +1,733 @@
+System: You are an expert React developer working on a project that renders preview components.
+
+## Task
+Your task is to fix the errors.
+
+## Role & Capabilities
+- You are a **component error fixing assistant**
+- You can read files, make edits, and use tools to diagnose issues
+- You have access to browser errors and TypeScript errors
+
+## Tools Available
+1. **getFile** (Using tool call) - Read contents of project files
+2. **globTool** (Using tool call) - Find files matching a glob pattern
+3. **grepTool** (Using tool call) - Search for regex patterns in files using ripgrep
+4. **File Editing** (Using xml tags in your response) - Make changes to fix errors using XML format
+
+## File Edit Format
+When you want to edit a file, use this exact XML format:
+
+<file path="path/to/file">
+  <change>
+    <description>Brief explanation of what you're changing</description>
+    <content>
+// Your complete file content here
+    </content>
+  </change>
+</file>
+
+## Important Rules
+1. Only update a file if you know its contents. Use getFile tool to read first.
+2. Most errors can be fixed by updating the preview file. Only update other files if necessary.
+3. Provide complete file content - do not use placeholders or ellipses.
+4. Always include necessary imports and dependencies.
+5. When making changes:
+   - Add all required import statements
+   - Include complete component code
+   - Ensure proper TypeScript types
+   - Handle all edge cases
+6. It is very important that the component is rendered exactly as it is writting in the codebase. Do not mock or fake the component (because then it may look different) but you can change the component code to fix the error.
+7. DO NOT MOCK OR FAKE THE COMPONENT ITSELF. KEEP TRYING UNTIL THE ERROR IS FIXED BUT YOU MUST NOT CREATE A FAKE SIMPLIFIED VERSION OF THE COMPONENT.
+8. DO NOT REMOVE CSS STYLES. Its important that the component looks exactly as it is in the codebase and removing css will make it look different.
+
+
+## Error Handling Process
+1. Read and understand the error message (TypeScript or runtime errors)
+2. Use getFile to examine relevant files
+3. Make targeted fixes using the XML format
+4. If the error is caused by the fact that a provider is missing. In these cases, find the provider and add it to the preview file.
+5. If the error persists, try different fixes. Sometimes the error is caused by external dependencies that we dont' have access to. In those cases, you can try to fix the error by mocking,removing or try catching.
+6. Since we are running this project in a preview environemnt, no process.env is available. You can fix this by hardcoding the variables in the file they are defined in.
+7. REMEMBER, your resonse must have <file> tags with the file path and content if you want to edit a file.
+8. DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+User: An error occurred when rendering the component route at PostInlineAttachmentRenderer-d8cac6c1.tsx
+Error:
+
+# Error 1
+
+## Error Message
+Error: useScope must be used within a ScopeProviderError: useScope must be used within a ScopeProvider
+
+## Stack Trace
+```
+    at useScope (/contexts/scope.tsx:59:11)
+    at useGetAttachment (/hooks/useGetAttachment.ts:8:21)
+    at useServerOrOptimisticAttachment (/hooks/useServerOrOptimisticAttachment.ts:4:42)
+    at InlineAttachmentRenderer (/components/InlineAttachmentRenderer.tsx:16:60)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at mountIndeterminateComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14949:21)
+    at beginWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:15930:22)
+    at beginWork$1 (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19774:22)
+    at performUnitOfWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19222:20)
+    at workLoopSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19158:13)
+```
+
+## Component Stack
+```
+
+    at InlineAttachmentRenderer (/components/InlineAttachmentRenderer.tsx:15:11)
+    at div
+    at /node_modules/.vite/deps/@tiptap_react.js?v=a04c50ac:1193:27
+    at EmbedContainer (/components/Post/Notes/EmbedContainer.tsx:6:34)
+    at PostInlineAttachmentRenderer (/components/Post/PostInlineAttachmentRenderer.tsx:7:46)
+    at ComponentPreview (/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx:5:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:53:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { PostInlineAttachmentRenderer } from '../../components/Post/PostInlineAttachmentRenderer';
+import { Editor } from '@tiptap/core';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    selected: {
+      type: "boolean",
+      value: false,
+      label: "Selected"
+    },
+    postId: {
+      type: "string",
+      value: "post-123",
+      label: "Post ID"
+    }
+  });
+
+  // Mock the minimum required props for NodeViewWrapperProps
+  const mockEditor = {
+    options: {
+      editable: true
+    }
+  } as Editor;
+
+  const mockNode = {
+    attrs: {
+      id: "attachment-123",
+      optimistic_id: "opt-123",
+      error: null,
+      width: 300,
+      height: 200
+    }
+  };
+
+  const mockExtension = {
+    options: {
+      postId: state.postId.value
+    }
+  };
+
+  return (
+    <PostInlineAttachmentRenderer
+      editor={mockEditor}
+      node={mockNode}
+      extension={mockExtension}
+      selected={state.selected.value}
+      getPos={() => 0}
+      updateAttributes={() => {}}
+      deleteNode={() => {}}
+    />
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I'll help fix this error. The error indicates that we need a ScopeProvider since the component uses `useScope` hook. Let me check the relevant files to understand the scope provider requirements.
+
+
+Assistant: Let me check the scope context implementation:
+
+
+Assistant: Now I understand the issue. The component needs to be wrapped in a ScopeProvider. Let's update the preview file to include the ScopeProvider:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx">
+<change>
+<description>Add ScopeProvider to wrap the component and provide necessary scope context</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { PostInlineAttachmentRenderer } from '../../components/Post/PostInlineAttachmentRenderer';
+import { Editor } from '@tiptap/core';
+import { ScopeProvider } from '../../contexts/scope';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    selected: {
+      type: "boolean",
+      value: false,
+      label: "Selected"
+    },
+    postId: {
+      type: "string",
+      value: "post-123",
+      label: "Post ID"
+    }
+  });
+
+  // Mock the minimum required props for NodeViewWrapperProps
+  const mockEditor = {
+    options: {
+      editable: true
+    }
+  } as Editor;
+
+  const mockNode = {
+    attrs: {
+      id: "attachment-123",
+      optimistic_id: "opt-123",
+      error: null,
+      width: 300,
+      height: 200
+    }
+  };
+
+  const mockExtension = {
+    options: {
+      postId: state.postId.value
+    }
+  };
+
+  return (
+    <ScopeProvider>
+      <PostInlineAttachmentRenderer
+        editor={mockEditor}
+        node={mockNode}
+        extension={mockExtension}
+        selected={state.selected.value}
+        getPos={() => 0}
+        updateAttributes={() => {}}
+        deleteNode={() => {}}
+      />
+    </ScopeProvider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Imported the ScopeProvider from the contexts/scope file
+2. Wrapped the PostInlineAttachmentRenderer component with ScopeProvider
+3. Kept all the existing props and mock data intact
+
+This should resolve the "useScope must be used within a ScopeProvider" error while maintaining the exact same component rendering. The ScopeProvider will provide the necessary context that the useScope hook requires.
+
+Note that I've kept the component exactly as it is in the codebase and only added the required provider wrapper. This ensures that the component preview will look and behave exactly as it does in the main application.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at PostInlineAttachmentRenderer-d8cac6c1.tsx
+Error:
+
+# Error 1
+
+## Error Message
+Error: No QueryNormalizer set, use QueryNormalizerProvider to set oneError: No QueryNormalizer set, use QueryNormalizerProvider to set one
+
+## Stack Trace
+```
+    at useQueryNormalizer (/utils/normy/QueryNormalizerProvider.tsx:27:11)
+    at useGetAttachment (/hooks/useGetAttachment.ts:9:27)
+    at useServerOrOptimisticAttachment (/hooks/useServerOrOptimisticAttachment.ts:4:42)
+    at InlineAttachmentRenderer (/components/InlineAttachmentRenderer.tsx:16:60)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at mountIndeterminateComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14949:21)
+    at beginWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:15930:22)
+    at beginWork$1 (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19774:22)
+    at performUnitOfWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19222:20)
+    at workLoopSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19158:13)
+```
+
+## Component Stack
+```
+
+    at InlineAttachmentRenderer (/components/InlineAttachmentRenderer.tsx:15:11)
+    at div
+    at /node_modules/.vite/deps/@tiptap_react.js?v=a04c50ac:1193:27
+    at EmbedContainer (/components/Post/Notes/EmbedContainer.tsx:6:34)
+    at PostInlineAttachmentRenderer (/components/Post/PostInlineAttachmentRenderer.tsx:7:46)
+    at ScopeProvider (/contexts/scope.tsx:32:26)
+    at ComponentPreview (/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx:6:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:53:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { PostInlineAttachmentRenderer } from '../../components/Post/PostInlineAttachmentRenderer';
+import { Editor } from '@tiptap/core';
+import { ScopeProvider } from '../../contexts/scope';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    selected: {
+      type: "boolean",
+      value: false,
+      label: "Selected"
+    },
+    postId: {
+      type: "string",
+      value: "post-123",
+      label: "Post ID"
+    }
+  });
+
+  // Mock the minimum required props for NodeViewWrapperProps
+  const mockEditor = {
+    options: {
+      editable: true
+    }
+  } as Editor;
+
+  const mockNode = {
+    attrs: {
+      id: "attachment-123",
+      optimistic_id: "opt-123",
+      error: null,
+      width: 300,
+      height: 200
+    }
+  };
+
+  const mockExtension = {
+    options: {
+      postId: state.postId.value
+    }
+  };
+
+  return (
+    <ScopeProvider>
+      <PostInlineAttachmentRenderer
+        editor={mockEditor}
+        node={mockNode}
+        extension={mockExtension}
+        selected={state.selected.value}
+        getPos={() => 0}
+        updateAttributes={() => {}}
+        deleteNode={() => {}}
+      />
+    </ScopeProvider>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I'll help fix this error. The component needs a QueryNormalizerProvider. Let me check the implementation:
+
+
+Assistant: Let me also check if there are any existing implementations of QueryNormalizerProvider in the project:
+
+
+Assistant: Now I'll update the preview file to include both the QueryNormalizerProvider and the necessary QueryClient:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx">
+<change>
+<description>Add QueryNormalizerProvider with QueryClient</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { PostInlineAttachmentRenderer } from '../../components/Post/PostInlineAttachmentRenderer';
+import { Editor } from '@tiptap/core';
+import { ScopeProvider } from '../../contexts/scope';
+import { QueryClient } from '@tanstack/react-query';
+import { QueryNormalizerProvider } from '../../utils/normy/QueryNormalizerProvider';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    selected: {
+      type: "boolean",
+      value: false,
+      label: "Selected"
+    },
+    postId: {
+      type: "string",
+      value: "post-123",
+      label: "Post ID"
+    }
+  });
+
+  // Create a new QueryClient instance
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
+
+  // Mock the minimum required props for NodeViewWrapperProps
+  const mockEditor = {
+    options: {
+      editable: true
+    }
+  } as Editor;
+
+  const mockNode = {
+    attrs: {
+      id: "attachment-123",
+      optimistic_id: "opt-123",
+      error: null,
+      width: 300,
+      height: 200
+    }
+  };
+
+  const mockExtension = {
+    options: {
+      postId: state.postId.value
+    }
+  };
+
+  return (
+    <QueryNormalizerProvider queryClient={queryClient}>
+      <ScopeProvider>
+        <PostInlineAttachmentRenderer
+          editor={mockEditor}
+          node={mockNode}
+          extension={mockExtension}
+          selected={state.selected.value}
+          getPos={() => 0}
+          updateAttributes={() => {}}
+          deleteNode={() => {}}
+        />
+      </ScopeProvider>
+    </QueryNormalizerProvider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Added imports for QueryClient and QueryNormalizerProvider
+2. Created a new QueryClient instance with some default options
+3. Wrapped the component tree with QueryNormalizerProvider and provided the queryClient
+4. Kept the ScopeProvider and all other existing functionality intact
+
+This should resolve the "No QueryNormalizer set" error while maintaining the exact same component rendering. The QueryNormalizerProvider will provide the necessary context that the component needs for data normalization.
+
+Note that I've kept the component exactly as it is in the codebase and only added the required providers. This ensures that the component preview will look and behave exactly as it does in the main application.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at PostInlineAttachmentRenderer-d8cac6c1.tsx
+Error:
+
+# Error 1
+
+## Error Message
+TypeError: editor.on is not a functionTypeError: editor.on is not a function
+
+## Stack Trace
+```
+    at /components/Post/Notes/useRerenderNodeViewOnBlur.ts:6:12
+    at commitHookEffectListMount (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:16931:34)
+    at invokePassiveEffectMountInDEV (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:18342:19)
+    at invokeEffectsInDev (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19722:19)
+    at commitDoubleInvokeEffectsInDEV (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19707:15)
+    at flushPassiveEffectsImpl (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19524:13)
+    at flushPassiveEffects (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19468:22)
+    at /node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19349:17
+    at workLoop (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:197:42)
+    at flushWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:176:22)
+```
+
+## Component Stack
+```
+
+    at EmbedContainer (/components/Post/Notes/EmbedContainer.tsx:6:34)
+    at PostInlineAttachmentRenderer (/components/Post/PostInlineAttachmentRenderer.tsx:7:46)
+    at ScopeProvider (/contexts/scope.tsx:32:26)
+    at QueryNormalizerProvider (/utils/normy/QueryNormalizerProvider.tsx:6:3)
+    at ComponentPreview (/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx:8:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:53:3)
+```
+
+              
+# Error 2
+
+## Error Message
+TypeError: editor.on is not a functionTypeError: editor.on is not a function
+
+## Stack Trace
+```
+    at /components/Post/Notes/useRerenderNodeViewOnBlur.ts:6:12
+    at commitHookEffectListMount (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:16931:34)
+    at commitPassiveMountOnFiber (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:18179:17)
+    at commitPassiveMountEffects_complete (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:18147:17)
+    at commitPassiveMountEffects_begin (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:18137:15)
+    at commitPassiveMountEffects (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:18127:11)
+    at flushPassiveEffectsImpl (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19511:11)
+    at flushPassiveEffects (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19468:22)
+    at /node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19349:17
+    at workLoop (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:197:42)
+```
+
+## Component Stack
+```
+
+    at EmbedContainer (/components/Post/Notes/EmbedContainer.tsx:6:34)
+    at PostInlineAttachmentRenderer (/components/Post/PostInlineAttachmentRenderer.tsx:7:46)
+    at ScopeProvider (/contexts/scope.tsx:32:26)
+    at QueryNormalizerProvider (/utils/normy/QueryNormalizerProvider.tsx:6:3)
+    at ComponentPreview (/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx:8:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:53:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { PostInlineAttachmentRenderer } from '../../components/Post/PostInlineAttachmentRenderer';
+import { Editor } from '@tiptap/core';
+import { ScopeProvider } from '../../contexts/scope';
+import { QueryClient } from '@tanstack/react-query';
+import { QueryNormalizerProvider } from '../../utils/normy/QueryNormalizerProvider';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    selected: {
+      type: "boolean",
+      value: false,
+      label: "Selected"
+    },
+    postId: {
+      type: "string",
+      value: "post-123",
+      label: "Post ID"
+    }
+  });
+
+  // Create a new QueryClient instance
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
+
+  // Mock the minimum required props for NodeViewWrapperProps
+  const mockEditor = {
+    options: {
+      editable: true
+    }
+  } as Editor;
+
+  const mockNode = {
+    attrs: {
+      id: "attachment-123",
+      optimistic_id: "opt-123",
+      error: null,
+      width: 300,
+      height: 200
+    }
+  };
+
+  const mockExtension = {
+    options: {
+      postId: state.postId.value
+    }
+  };
+
+  return (
+    <QueryNormalizerProvider queryClient={queryClient}>
+      <ScopeProvider>
+        <PostInlineAttachmentRenderer
+          editor={mockEditor}
+          node={mockNode}
+          extension={mockExtension}
+          selected={state.selected.value}
+          getPos={() => 0}
+          updateAttributes={() => {}}
+          deleteNode={() => {}}
+        />
+      </ScopeProvider>
+    </QueryNormalizerProvider>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: The error is coming from `useRerenderNodeViewOnBlur.ts` which is trying to use `editor.on()` method. Let me check the implementation of this hook and see what's needed for the editor mock.
+
+
+Assistant: I see the issue. The mock editor needs to implement the event handling methods `on` and `off`. Let me update the preview file with a more complete editor mock:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx">
+<change>
+<description>Update editor mock to include event handling methods</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { PostInlineAttachmentRenderer } from '../../components/Post/PostInlineAttachmentRenderer';
+import { Editor } from '@tiptap/core';
+import { ScopeProvider } from '../../contexts/scope';
+import { QueryClient } from '@tanstack/react-query';
+import { QueryNormalizerProvider } from '../../utils/normy/QueryNormalizerProvider';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    selected: {
+      type: "boolean",
+      value: false,
+      label: "Selected"
+    },
+    postId: {
+      type: "string",
+      value: "post-123",
+      label: "Post ID"
+    }
+  });
+
+  // Create a new QueryClient instance
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
+
+  // Create a more complete editor mock with event handling
+  const mockEditor = {
+    options: {
+      editable: true
+    },
+    on: (event: string, callback: () => void) => {
+      // Return a handler ID or similar if needed
+      return callback;
+    },
+    off: (event: string, callback: () => void) => {
+      // Cleanup handler
+    },
+    commands: {},
+    state: {},
+    view: {
+      state: {
+        selection: {}
+      }
+    }
+  } as unknown as Editor;
+
+  const mockNode = {
+    attrs: {
+      id: "attachment-123",
+      optimistic_id: "opt-123",
+      error: null,
+      width: 300,
+      height: 200
+    }
+  };
+
+  const mockExtension = {
+    options: {
+      postId: state.postId.value
+    }
+  };
+
+  return (
+    <QueryNormalizerProvider queryClient={queryClient}>
+      <ScopeProvider>
+        <PostInlineAttachmentRenderer
+          editor={mockEditor}
+          node={mockNode}
+          extension={mockExtension}
+          selected={state.selected.value}
+          getPos={() => 0}
+          updateAttributes={() => {}}
+          deleteNode={() => {}}
+        />
+      </ScopeProvider>
+    </QueryNormalizerProvider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Updated the editor mock to include the required `on` and `off` methods for event handling
+2. Added additional editor properties that might be needed by the component
+3. Kept all other providers and functionality intact
+4. Used `as unknown as Editor` to satisfy TypeScript while providing a partial mock
+
+The mock editor now properly implements the event handling methods that are used by the `useRerenderNodeViewOnBlur` hook. This should resolve the "editor.on is not a function" error while maintaining the exact same component rendering.
+
+Note that I've kept the component exactly as it is in the codebase and only enhanced the editor mock to support the required functionality. This ensures that the component preview will look and behave exactly as it does in the main application.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/PostInlineAttachmentRenderer-d8cac6c1.tsx
+
+All changes applied successfully. Checking for errors...

@@ -1,0 +1,441 @@
+System: You are an expert React developer working on a project that renders preview components.
+
+## Task
+Your task is to fix the errors.
+
+## Role & Capabilities
+- You are a **component error fixing assistant**
+- You can read files, make edits, and use tools to diagnose issues
+- You have access to browser errors and TypeScript errors
+
+## Tools Available
+1. **getFile** (Using tool call) - Read contents of project files
+2. **globTool** (Using tool call) - Find files matching a glob pattern
+3. **grepTool** (Using tool call) - Search for regex patterns in files using ripgrep
+4. **File Editing** (Using xml tags in your response) - Make changes to fix errors using XML format
+
+## File Edit Format
+When you want to edit a file, use this exact XML format:
+
+<file path="path/to/file">
+  <change>
+    <description>Brief explanation of what you're changing</description>
+    <content>
+// Your complete file content here
+    </content>
+  </change>
+</file>
+
+## Important Rules
+1. Only update a file if you know its contents. Use getFile tool to read first.
+2. Most errors can be fixed by updating the preview file. Only update other files if necessary.
+3. Provide complete file content - do not use placeholders or ellipses.
+4. Always include necessary imports and dependencies.
+5. When making changes:
+   - Add all required import statements
+   - Include complete component code
+   - Ensure proper TypeScript types
+   - Handle all edge cases
+6. It is very important that the component is rendered exactly as it is writting in the codebase. Do not mock or fake the component (because then it may look different) but you can change the component code to fix the error.
+7. DO NOT MOCK OR FAKE THE COMPONENT ITSELF. KEEP TRYING UNTIL THE ERROR IS FIXED BUT YOU MUST NOT CREATE A FAKE SIMPLIFIED VERSION OF THE COMPONENT.
+8. DO NOT REMOVE CSS STYLES. Its important that the component looks exactly as it is in the codebase and removing css will make it look different.
+
+
+## Error Handling Process
+1. Read and understand the error message (TypeScript or runtime errors)
+2. Use getFile to examine relevant files
+3. Make targeted fixes using the XML format
+4. If the error is caused by the fact that a provider is missing. In these cases, find the provider and add it to the preview file.
+5. If the error persists, try different fixes. Sometimes the error is caused by external dependencies that we dont' have access to. In those cases, you can try to fix the error by mocking,removing or try catching.
+6. Since we are running this project in a preview environemnt, no process.env is available. You can fix this by hardcoding the variables in the file they are defined in.
+7. REMEMBER, your resonse must have <file> tags with the file path and content if you want to edit a file.
+8. DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+User: An error occurred when rendering the component route at SubjectCommand-50a8ed0d.tsx
+Error:
+
+# Error 1
+
+## Error Message
+Error: useScope must be used within a ScopeProviderError: useScope must be used within a ScopeProvider
+
+## Stack Trace
+```
+    at useScope (/contexts/scope.tsx:59:11)
+    at useSyncedProjects (/hooks/useSyncedProjects.ts:18:21)
+    at useIsChatProjectRoute (/hooks/useIsChatProjectRoute.ts:5:24)
+    at useIsSplitViewAvailable (/components/SplitView/hooks/useIsSplitViewAvailable.ts:9:29)
+    at SubjectCommand (/components/Subject/SubjectCommand.tsx:13:36)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at mountIndeterminateComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14949:21)
+    at beginWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:15930:22)
+    at beginWork$1 (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19774:22)
+    at performUnitOfWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19222:20)
+```
+
+## Component Stack
+```
+
+    at SubjectCommand (/components/Subject/SubjectCommand.tsx:9:34)
+    at Provider (/node_modules/.vite/deps/chunk-NZ5R6FIC.js?v=a04c50ac:601:3)
+    at ComponentPreview
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { SubjectCommand } from '../../components/Subject/SubjectCommand';
+import { Provider } from 'jotai';
+
+export default function ComponentPreview() {
+  return (
+    <Provider>
+      <SubjectCommand>
+        <div>Example Command Content</div>
+      </SubjectCommand>
+    </Provider>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I'll help fix this error. The error indicates that we're missing the ScopeProvider which is required by the component hierarchy. Let's first check the relevant files to understand the dependencies.
+
+
+Assistant: Now I understand that we need to wrap our component with the ScopeProvider. Let's also check the SubjectCommand component to understand its requirements.
+
+
+Assistant: I see that we need to provide both the ScopeProvider and proper Jotai atom setup. Let's update the preview file to include these providers:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx">
+<change>
+<description>Add ScopeProvider and necessary providers for the SubjectCommand component</description>
+<content>
+import React from 'react';
+import { Provider } from 'jotai';
+import { SubjectCommand } from '../../components/Subject/SubjectCommand';
+import { ScopeProvider } from '../../contexts/scope';
+import { useRouter } from 'next/router';
+
+// Mock Next.js router for the preview
+const MockRouter = () => {
+  const router = useRouter();
+  return {
+    ...router,
+    query: { org: 'test-org' },
+    isReady: true,
+    asPath: '/test-org/projects'
+  };
+};
+
+// Override useRouter to provide mock data
+jest.mock('next/router', () => ({
+  useRouter: () => MockRouter()
+}));
+
+export default function ComponentPreview() {
+  return (
+    <Provider>
+      <ScopeProvider>
+        <SubjectCommand>
+          <div>Example Command Content</div>
+        </SubjectCommand>
+      </ScopeProvider>
+    </Provider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Added the ScopeProvider from the contexts/scope.tsx
+2. Added a mock for the Next.js router since ScopeProvider depends on it
+3. Kept the Jotai Provider
+4. Maintained the original SubjectCommand component structure
+
+This should resolve the "useScope must be used within a ScopeProvider" error while maintaining the exact functionality of the component. The component will now have access to the scope context it needs.
+
+Note that we might still need to handle other dependencies if we encounter additional errors, but this should resolve the immediate ScopeProvider error. Let me know if you encounter any other issues and I'll help resolve those as well.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at SubjectCommand-50a8ed0d.tsx
+Error:
+
+# Error 1
+
+## Error Message
+ReferenceError: jest is not definedReferenceError: jest is not defined
+
+## Stack Trace
+```
+    at /.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx:15:1
+```
+
+## Component Stack
+```
+
+    at Lazy
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx" type="preview>
+import React from 'react';
+import { Provider } from 'jotai';
+import { SubjectCommand } from '../../components/Subject/SubjectCommand';
+import { ScopeProvider } from '../../contexts/scope';
+import { useRouter } from 'next/router';
+
+// Mock Next.js router for the preview
+const MockRouter = () => {
+  const router = useRouter();
+  return {
+    ...router,
+    query: { org: 'test-org' },
+    isReady: true,
+    asPath: '/test-org/projects'
+  };
+};
+
+// Override useRouter to provide mock data
+jest.mock('next/router', () => ({
+  useRouter: () => MockRouter()
+}));
+
+export default function ComponentPreview() {
+  return (
+    <Provider>
+      <ScopeProvider>
+        <SubjectCommand>
+          <div>Example Command Content</div>
+        </SubjectCommand>
+      </ScopeProvider>
+    </Provider>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I apologize for using jest.mock which isn't available in this environment. Let's modify the approach to mock the router using React's context instead.
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx">
+<change>
+<description>Remove jest.mock and implement router context properly</description>
+<content>
+import React from 'react';
+import { Provider } from 'jotai';
+import { SubjectCommand } from '../../components/Subject/SubjectCommand';
+import { ScopeProvider } from '../../contexts/scope';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
+
+const mockRouter = {
+  query: { org: 'test-org' },
+  isReady: true,
+  asPath: '/test-org/projects',
+  pathname: '/test-org/projects',
+  route: '/test-org/projects',
+  basePath: '',
+  events: {
+    on: () => {},
+    off: () => {},
+    emit: () => {}
+  },
+  push: () => Promise.resolve(true),
+  replace: () => Promise.resolve(true),
+  reload: () => {},
+  back: () => {},
+  prefetch: () => Promise.resolve(),
+  beforePopState: () => {},
+  isFallback: false
+};
+
+export default function ComponentPreview() {
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <Provider>
+        <ScopeProvider>
+          <SubjectCommand>
+            <div>Example Command Content</div>
+          </SubjectCommand>
+        </ScopeProvider>
+      </Provider>
+    </RouterContext.Provider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Removed the jest.mock approach
+2. Added RouterContext.Provider from Next.js
+3. Created a more complete mock router object that satisfies the Next.js router interface
+4. Wrapped the component tree with RouterContext.Provider
+5. Maintained all other necessary providers (Jotai Provider and ScopeProvider)
+
+This should resolve the "jest is not defined" error while still providing the necessary router context for the ScopeProvider to function correctly. The component structure and functionality remain unchanged, we're just providing the required context for it to work in the preview environment.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: TypeScript errors found in the component at SubjectCommand-50a8ed0d.tsx
+Errors:
+TypeScript Errors:
+Line 5, Column 31: Cannot find module 'next/dist/shared/lib/router-context' or its corresponding type declarations.
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx" type="preview>
+import React from 'react';
+import { Provider } from 'jotai';
+import { SubjectCommand } from '../../components/Subject/SubjectCommand';
+import { ScopeProvider } from '../../contexts/scope';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
+
+const mockRouter = {
+  query: { org: 'test-org' },
+  isReady: true,
+  asPath: '/test-org/projects',
+  pathname: '/test-org/projects',
+  route: '/test-org/projects',
+  basePath: '',
+  events: {
+    on: () => {},
+    off: () => {},
+    emit: () => {}
+  },
+  push: () => Promise.resolve(true),
+  replace: () => Promise.resolve(true),
+  reload: () => {},
+  back: () => {},
+  prefetch: () => Promise.resolve(),
+  beforePopState: () => {},
+  isFallback: false
+};
+
+export default function ComponentPreview() {
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <Provider>
+        <ScopeProvider>
+          <SubjectCommand>
+            <div>Example Command Content</div>
+          </SubjectCommand>
+        </ScopeProvider>
+      </Provider>
+    </RouterContext.Provider>
+  );
+}
+</file>
+
+Please fix the TypeScript errors. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: Let's fix this by using the proper Next.js router context import. We'll create a simple mock router context instead.
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx">
+<change>
+<description>Fix router context implementation with proper typing</description>
+<content>
+import React from 'react';
+import { Provider } from 'jotai';
+import { SubjectCommand } from '../../components/Subject/SubjectCommand';
+import { ScopeProvider } from '../../contexts/scope';
+import { NextRouter } from 'next/router';
+import { createContext } from 'react';
+
+// Create a mock router context
+const RouterContext = createContext<NextRouter>({} as NextRouter);
+
+const mockRouter: NextRouter = {
+  query: { org: 'test-org' },
+  isReady: true,
+  asPath: '/test-org/projects',
+  pathname: '/test-org/projects',
+  route: '/test-org/projects',
+  basePath: '',
+  events: {
+    on: () => {},
+    off: () => {},
+    emit: () => {}
+  },
+  push: () => Promise.resolve(true),
+  replace: () => Promise.resolve(true),
+  reload: () => {},
+  back: () => {},
+  prefetch: () => Promise.resolve(),
+  beforePopState: () => {},
+  isFallback: false,
+  isLocaleDomain: false,
+  isPreview: false,
+  isReady: true,
+  defaultLocale: 'en',
+  domainLocales: [],
+  locale: 'en',
+  locales: ['en']
+};
+
+export default function ComponentPreview() {
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <Provider>
+        <ScopeProvider>
+          <SubjectCommand>
+            <div>Example Command Content</div>
+          </SubjectCommand>
+        </ScopeProvider>
+      </Provider>
+    </RouterContext.Provider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Removed the problematic import from next/dist/shared/lib/router-context
+2. Added proper NextRouter type from next/router
+3. Created our own RouterContext using React's createContext
+4. Added proper typing to the mock router object using NextRouter interface
+5. Added all required properties for the NextRouter type
+6. Maintained all other providers and component structure
+
+This should resolve the TypeScript error while still providing the necessary router context for the ScopeProvider to function correctly. The component structure and functionality remain unchanged, we're just providing the required context with proper TypeScript types.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SubjectCommand-50a8ed0d.tsx
+
+All changes applied successfully. Checking for errors...

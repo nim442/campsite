@@ -1,0 +1,973 @@
+System: You are an expert React developer working on a project that renders preview components.
+
+## Task
+Your task is to fix the errors.
+
+## Role & Capabilities
+- You are a **component error fixing assistant**
+- You can read files, make edits, and use tools to diagnose issues
+- You have access to browser errors and TypeScript errors
+
+## Tools Available
+1. **getFile** (Using tool call) - Read contents of project files
+2. **globTool** (Using tool call) - Find files matching a glob pattern
+3. **grepTool** (Using tool call) - Search for regex patterns in files using ripgrep
+4. **File Editing** (Using xml tags in your response) - Make changes to fix errors using XML format
+
+## File Edit Format
+When you want to edit a file, use this exact XML format:
+
+<file path="path/to/file">
+  <change>
+    <description>Brief explanation of what you're changing</description>
+    <content>
+// Your complete file content here
+    </content>
+  </change>
+</file>
+
+## Important Rules
+1. Only update a file if you know its contents. Use getFile tool to read first.
+2. Most errors can be fixed by updating the preview file. Only update other files if necessary.
+3. Provide complete file content - do not use placeholders or ellipses.
+4. Always include necessary imports and dependencies.
+5. When making changes:
+   - Add all required import statements
+   - Include complete component code
+   - Ensure proper TypeScript types
+   - Handle all edge cases
+6. It is very important that the component is rendered exactly as it is writting in the codebase. Do not mock or fake the component (because then it may look different) but you can change the component code to fix the error.
+7. DO NOT MOCK OR FAKE THE COMPONENT ITSELF. KEEP TRYING UNTIL THE ERROR IS FIXED BUT YOU MUST NOT CREATE A FAKE SIMPLIFIED VERSION OF THE COMPONENT.
+8. DO NOT REMOVE CSS STYLES. Its important that the component looks exactly as it is in the codebase and removing css will make it look different.
+
+
+## Error Handling Process
+1. Read and understand the error message (TypeScript or runtime errors)
+2. Use getFile to examine relevant files
+3. Make targeted fixes using the XML format
+4. If the error is caused by the fact that a provider is missing. In these cases, find the provider and add it to the preview file.
+5. If the error persists, try different fixes. Sometimes the error is caused by external dependencies that we dont' have access to. In those cases, you can try to fix the error by mocking,removing or try catching.
+6. Since we are running this project in a preview environemnt, no process.env is available. You can fix this by hardcoding the variables in the file they are defined in.
+7. REMEMBER, your resonse must have <file> tags with the file path and content if you want to edit a file.
+8. DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+User: An error occurred when rendering the component route at ExistingThreadListItem-700cfa4e.tsx
+Error:
+
+# Error 1
+
+## Error Message
+Error: useScope must be used within a ScopeProviderError: useScope must be used within a ScopeProvider
+
+## Stack Trace
+```
+    at useScope (/contexts/scope.tsx:59:11)
+    at useMarkThreadRead (/hooks/useMarkThreadRead.ts:13:21)
+    at ExistingThreadListItem (/components/Chat/ExistingThreadListItem.tsx:14:38)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at mountIndeterminateComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14949:21)
+    at beginWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:15930:22)
+    at beginWork$1 (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19774:22)
+    at performUnitOfWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19222:20)
+    at workLoopSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19158:13)
+    at renderRootSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19137:15)
+```
+
+## Component Stack
+```
+
+    at ExistingThreadListItem (/components/Chat/ExistingThreadListItem.tsx:10:42)
+    at ComponentPreview (/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx:5:19)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ExistingThreadListItem } from '../../components/Chat/ExistingThreadListItem';
+export default function ComponentPreview() {
+  const [state] = useParentState({
+    isSelected: {
+      type: "boolean",
+      value: false,
+      label: "Is Selected"
+    },
+    thread: {
+      type: "object",
+      value: {
+        id: "123",
+        title: "Example Thread",
+        organization_slug: "demo-org",
+        latest_message_truncated: "This is the latest message in the thread...",
+        last_message_at: new Date().toISOString(),
+        unread_count: 2,
+        avatar_urls: {
+          xs: "https://placekitten.com/32/32",
+          sm: "https://placekitten.com/64/64",
+          base: "https://placekitten.com/128/128",
+          lg: "https://placekitten.com/256/256",
+          xl: "https://placekitten.com/512/512",
+          xxl: "https://placekitten.com/1024/1024"
+        },
+        group: false,
+        channel_name: "general",
+        path: "/demo-org/chat/123",
+        call_room_url: null,
+        remote_call_room_id: null,
+        integration_dm: false,
+        active_call: null,
+        deactivated_members: [],
+        type_name: "thread",
+        project_id: null,
+        manually_marked_unread: false,
+        viewer_has_favorited: false,
+        other_members: [],
+        viewer_is_thread_member: true,
+        viewer_can_manage_integrations: false,
+        viewer_can_delete: false,
+        viewer_can_force_notification: false,
+        image_url: null
+      },
+      label: "Thread Data"
+    }
+  });
+
+  return (
+    <ExistingThreadListItem 
+      thread={state.thread.value}
+      isSelected={state.isSelected.value}
+    />
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I'll help fix this error. The error indicates that we need a ScopeProvider since the component uses the useScope hook. Let me check the relevant files to implement the fix correctly.
+
+
+Assistant: Now I'll update the preview file to include the ScopeProvider and necessary context. I'll also need to mock the Next.js router since the ScopeProvider depends on it.
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx">
+<change>
+<description>Add ScopeProvider with mocked router context to fix the useScope error</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ExistingThreadListItem } from '../../components/Chat/ExistingThreadListItem';
+import { ScopeProvider } from '../../contexts/scope';
+
+// Mock Next.js router
+const mockRouter = {
+  query: { org: 'demo-org' },
+  isReady: true,
+  asPath: '/demo-org/chat',
+};
+
+// Mock the useRouter hook
+jest.mock('next/router', () => ({
+  useRouter: () => mockRouter
+}));
+
+export default function ComponentPreview() {
+  const [state] = useParentState({
+    isSelected: {
+      type: "boolean",
+      value: false,
+      label: "Is Selected"
+    },
+    thread: {
+      type: "object",
+      value: {
+        id: "123",
+        title: "Example Thread",
+        organization_slug: "demo-org",
+        latest_message_truncated: "This is the latest message in the thread...",
+        last_message_at: new Date().toISOString(),
+        unread_count: 2,
+        avatar_urls: {
+          xs: "https://placekitten.com/32/32",
+          sm: "https://placekitten.com/64/64",
+          base: "https://placekitten.com/128/128",
+          lg: "https://placekitten.com/256/256",
+          xl: "https://placekitten.com/512/512",
+          xxl: "https://placekitten.com/1024/1024"
+        },
+        group: false,
+        channel_name: "general",
+        path: "/demo-org/chat/123",
+        call_room_url: null,
+        remote_call_room_id: null,
+        integration_dm: false,
+        active_call: null,
+        deactivated_members: [],
+        type_name: "thread",
+        project_id: null,
+        manually_marked_unread: false,
+        viewer_has_favorited: false,
+        other_members: [],
+        viewer_is_thread_member: true,
+        viewer_can_manage_integrations: false,
+        viewer_can_delete: false,
+        viewer_can_force_notification: false,
+        image_url: null
+      },
+      label: "Thread Data"
+    }
+  });
+
+  return (
+    <ScopeProvider>
+      <ExistingThreadListItem 
+        thread={state.thread.value}
+        isSelected={state.isSelected.value}
+      />
+    </ScopeProvider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes to fix the error:
+
+1. Added the import for ScopeProvider from the contexts/scope file
+2. Added a mock router object since the ScopeProvider depends on Next.js router
+3. Wrapped the ExistingThreadListItem component with ScopeProvider
+4. Kept all the existing props and data structure intact
+
+The ScopeProvider is now properly set up with the necessary context and router mock, which should resolve the "useScope must be used within a ScopeProvider" error while maintaining the exact functionality of the component.
+
+Let me know if you encounter any other errors after this fix. Remember that there might be other context providers needed depending on what other hooks the component uses.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at ExistingThreadListItem-700cfa4e.tsx
+Error:
+
+# Error 1
+
+## Error Message
+ReferenceError: jest is not definedReferenceError: jest is not defined
+
+## Stack Trace
+```
+    at /.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx:10:1
+```
+
+## Component Stack
+```
+
+    at Lazy
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ExistingThreadListItem } from '../../components/Chat/ExistingThreadListItem';
+import { ScopeProvider } from '../../contexts/scope';
+
+// Mock Next.js router
+const mockRouter = {
+  query: { org: 'demo-org' },
+  isReady: true,
+  asPath: '/demo-org/chat',
+};
+
+// Mock the useRouter hook
+jest.mock('next/router', () => ({
+  useRouter: () => mockRouter
+}));
+
+export default function ComponentPreview() {
+  const [state] = useParentState({
+    isSelected: {
+      type: "boolean",
+      value: false,
+      label: "Is Selected"
+    },
+    thread: {
+      type: "object",
+      value: {
+        id: "123",
+        title: "Example Thread",
+        organization_slug: "demo-org",
+        latest_message_truncated: "This is the latest message in the thread...",
+        last_message_at: new Date().toISOString(),
+        unread_count: 2,
+        avatar_urls: {
+          xs: "https://placekitten.com/32/32",
+          sm: "https://placekitten.com/64/64",
+          base: "https://placekitten.com/128/128",
+          lg: "https://placekitten.com/256/256",
+          xl: "https://placekitten.com/512/512",
+          xxl: "https://placekitten.com/1024/1024"
+        },
+        group: false,
+        channel_name: "general",
+        path: "/demo-org/chat/123",
+        call_room_url: null,
+        remote_call_room_id: null,
+        integration_dm: false,
+        active_call: null,
+        deactivated_members: [],
+        type_name: "thread",
+        project_id: null,
+        manually_marked_unread: false,
+        viewer_has_favorited: false,
+        other_members: [],
+        viewer_is_thread_member: true,
+        viewer_can_manage_integrations: false,
+        viewer_can_delete: false,
+        viewer_can_force_notification: false,
+        image_url: null
+      },
+      label: "Thread Data"
+    }
+  });
+
+  return (
+    <ScopeProvider>
+      <ExistingThreadListItem 
+        thread={state.thread.value}
+        isSelected={state.isSelected.value}
+      />
+    </ScopeProvider>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I apologize for using jest.mock. Let's fix this by using a different approach to provide the router context. We'll create a mock router context without using jest.
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx">
+<change>
+<description>Remove jest.mock and use RouterContext directly</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ExistingThreadListItem } from '../../components/Chat/ExistingThreadListItem';
+import { ScopeProvider } from '../../contexts/scope';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
+
+// Mock Next.js router
+const mockRouter = {
+  query: { org: 'demo-org' },
+  isReady: true,
+  asPath: '/demo-org/chat',
+  pathname: '/demo-org/chat',
+  route: '/demo-org/chat',
+  basePath: '',
+  events: {
+    emit: () => {},
+    off: () => {},
+    on: () => {}
+  },
+  push: () => Promise.resolve(true),
+  replace: () => Promise.resolve(true),
+  reload: () => {},
+  back: () => {},
+  prefetch: () => Promise.resolve(),
+  beforePopState: () => {},
+  isFallback: false,
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false
+};
+
+export default function ComponentPreview() {
+  const [state] = useParentState({
+    isSelected: {
+      type: "boolean",
+      value: false,
+      label: "Is Selected"
+    },
+    thread: {
+      type: "object",
+      value: {
+        id: "123",
+        title: "Example Thread",
+        organization_slug: "demo-org",
+        latest_message_truncated: "This is the latest message in the thread...",
+        last_message_at: new Date().toISOString(),
+        unread_count: 2,
+        avatar_urls: {
+          xs: "https://placekitten.com/32/32",
+          sm: "https://placekitten.com/64/64",
+          base: "https://placekitten.com/128/128",
+          lg: "https://placekitten.com/256/256",
+          xl: "https://placekitten.com/512/512",
+          xxl: "https://placekitten.com/1024/1024"
+        },
+        group: false,
+        channel_name: "general",
+        path: "/demo-org/chat/123",
+        call_room_url: null,
+        remote_call_room_id: null,
+        integration_dm: false,
+        active_call: null,
+        deactivated_members: [],
+        type_name: "thread",
+        project_id: null,
+        manually_marked_unread: false,
+        viewer_has_favorited: false,
+        other_members: [],
+        viewer_is_thread_member: true,
+        viewer_can_manage_integrations: false,
+        viewer_can_delete: false,
+        viewer_can_force_notification: false,
+        image_url: null
+      },
+      label: "Thread Data"
+    }
+  });
+
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <ScopeProvider>
+        <ExistingThreadListItem 
+          thread={state.thread.value}
+          isSelected={state.isSelected.value}
+        />
+      </ScopeProvider>
+    </RouterContext.Provider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Removed the jest.mock approach
+2. Imported RouterContext from Next.js
+3. Created a more complete mock router object with all necessary properties and methods
+4. Wrapped the component with RouterContext.Provider to provide the router context
+5. Kept the ScopeProvider and all other functionality intact
+
+This should resolve the "jest is not defined" error while still providing the necessary router context for the ScopeProvider to work properly. The component will maintain its exact functionality and appearance as in the codebase.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: TypeScript errors found in the component at ExistingThreadListItem-700cfa4e.tsx
+Errors:
+TypeScript Errors:
+Line 5, Column 31: Cannot find module 'next/dist/shared/lib/router-context' or its corresponding type declarations.
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ExistingThreadListItem } from '../../components/Chat/ExistingThreadListItem';
+import { ScopeProvider } from '../../contexts/scope';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
+
+// Mock Next.js router
+const mockRouter = {
+  query: { org: 'demo-org' },
+  isReady: true,
+  asPath: '/demo-org/chat',
+  pathname: '/demo-org/chat',
+  route: '/demo-org/chat',
+  basePath: '',
+  events: {
+    emit: () => {},
+    off: () => {},
+    on: () => {}
+  },
+  push: () => Promise.resolve(true),
+  replace: () => Promise.resolve(true),
+  reload: () => {},
+  back: () => {},
+  prefetch: () => Promise.resolve(),
+  beforePopState: () => {},
+  isFallback: false,
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false
+};
+
+export default function ComponentPreview() {
+  const [state] = useParentState({
+    isSelected: {
+      type: "boolean",
+      value: false,
+      label: "Is Selected"
+    },
+    thread: {
+      type: "object",
+      value: {
+        id: "123",
+        title: "Example Thread",
+        organization_slug: "demo-org",
+        latest_message_truncated: "This is the latest message in the thread...",
+        last_message_at: new Date().toISOString(),
+        unread_count: 2,
+        avatar_urls: {
+          xs: "https://placekitten.com/32/32",
+          sm: "https://placekitten.com/64/64",
+          base: "https://placekitten.com/128/128",
+          lg: "https://placekitten.com/256/256",
+          xl: "https://placekitten.com/512/512",
+          xxl: "https://placekitten.com/1024/1024"
+        },
+        group: false,
+        channel_name: "general",
+        path: "/demo-org/chat/123",
+        call_room_url: null,
+        remote_call_room_id: null,
+        integration_dm: false,
+        active_call: null,
+        deactivated_members: [],
+        type_name: "thread",
+        project_id: null,
+        manually_marked_unread: false,
+        viewer_has_favorited: false,
+        other_members: [],
+        viewer_is_thread_member: true,
+        viewer_can_manage_integrations: false,
+        viewer_can_delete: false,
+        viewer_can_force_notification: false,
+        image_url: null
+      },
+      label: "Thread Data"
+    }
+  });
+
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <ScopeProvider>
+        <ExistingThreadListItem 
+          thread={state.thread.value}
+          isSelected={state.isSelected.value}
+        />
+      </ScopeProvider>
+    </RouterContext.Provider>
+  );
+}
+</file>
+
+Please fix the TypeScript errors. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: Let's fix this by using the public Next.js router API instead of the internal router context. We'll use a different approach to provide the router context.
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx">
+<change>
+<description>Use Next.js public API instead of internal router context</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ExistingThreadListItem } from '../../components/Chat/ExistingThreadListItem';
+import { ScopeProvider } from '../../contexts/scope';
+
+// Override the useRouter hook
+import Router from 'next/router';
+
+const mockRouter = {
+  query: { org: 'demo-org' },
+  isReady: true,
+  asPath: '/demo-org/chat',
+  pathname: '/demo-org/chat',
+  route: '/demo-org/chat',
+  basePath: '',
+  events: {
+    emit: () => {},
+    off: () => {},
+    on: () => {}
+  },
+  push: () => Promise.resolve(true),
+  replace: () => Promise.resolve(true),
+  reload: () => {},
+  back: () => {},
+  prefetch: () => Promise.resolve(),
+  beforePopState: () => {},
+  isFallback: false,
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false
+};
+
+// Override the useRouter implementation
+const useRouter = () => mockRouter;
+Router.useRouter = useRouter;
+
+export default function ComponentPreview() {
+  const [state] = useParentState({
+    isSelected: {
+      type: "boolean",
+      value: false,
+      label: "Is Selected"
+    },
+    thread: {
+      type: "object",
+      value: {
+        id: "123",
+        title: "Example Thread",
+        organization_slug: "demo-org",
+        latest_message_truncated: "This is the latest message in the thread...",
+        last_message_at: new Date().toISOString(),
+        unread_count: 2,
+        avatar_urls: {
+          xs: "https://placekitten.com/32/32",
+          sm: "https://placekitten.com/64/64",
+          base: "https://placekitten.com/128/128",
+          lg: "https://placekitten.com/256/256",
+          xl: "https://placekitten.com/512/512",
+          xxl: "https://placekitten.com/1024/1024"
+        },
+        group: false,
+        channel_name: "general",
+        path: "/demo-org/chat/123",
+        call_room_url: null,
+        remote_call_room_id: null,
+        integration_dm: false,
+        active_call: null,
+        deactivated_members: [],
+        type_name: "thread",
+        project_id: null,
+        manually_marked_unread: false,
+        viewer_has_favorited: false,
+        other_members: [],
+        viewer_is_thread_member: true,
+        viewer_can_manage_integrations: false,
+        viewer_can_delete: false,
+        viewer_can_force_notification: false,
+        image_url: null
+      },
+      label: "Thread Data"
+    }
+  });
+
+  return (
+    <ScopeProvider>
+      <ExistingThreadListItem 
+        thread={state.thread.value}
+        isSelected={state.isSelected.value}
+      />
+    </ScopeProvider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Removed the RouterContext import that was causing the TypeScript error
+2. Instead, we're now using the public Next.js Router API
+3. Created a mock router and overridden the useRouter implementation
+4. Kept all the component functionality and props intact
+5. The ScopeProvider will now use the mocked router through the standard Next.js router hooks
+
+This approach should resolve the TypeScript error while still providing the necessary router context for the ScopeProvider to work properly. The component will maintain its exact functionality and appearance as in the codebase.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at ExistingThreadListItem-700cfa4e.tsx
+Error:
+
+# Error 1
+
+## Error Message
+Error: No QueryNormalizer set, use QueryNormalizerProvider to set oneError: No QueryNormalizer set, use QueryNormalizerProvider to set one
+
+## Stack Trace
+```
+    at useQueryNormalizer (/utils/normy/QueryNormalizerProvider.tsx:27:11)
+    at useMarkThreadRead (/hooks/useMarkThreadRead.ts:15:27)
+    at ExistingThreadListItem (/components/Chat/ExistingThreadListItem.tsx:14:38)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at mountIndeterminateComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14949:21)
+    at beginWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:15930:22)
+    at beginWork$1 (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19774:22)
+    at performUnitOfWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19222:20)
+    at workLoopSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19158:13)
+    at renderRootSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19137:15)
+```
+
+## Component Stack
+```
+
+    at ExistingThreadListItem (/components/Chat/ExistingThreadListItem.tsx:10:42)
+    at ScopeProvider (/contexts/scope.tsx:32:26)
+    at ComponentPreview (/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx:38:19)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ExistingThreadListItem } from '../../components/Chat/ExistingThreadListItem';
+import { ScopeProvider } from '../../contexts/scope';
+
+// Override the useRouter hook
+import Router from 'next/router';
+
+const mockRouter = {
+  query: { org: 'demo-org' },
+  isReady: true,
+  asPath: '/demo-org/chat',
+  pathname: '/demo-org/chat',
+  route: '/demo-org/chat',
+  basePath: '',
+  events: {
+    emit: () => {},
+    off: () => {},
+    on: () => {}
+  },
+  push: () => Promise.resolve(true),
+  replace: () => Promise.resolve(true),
+  reload: () => {},
+  back: () => {},
+  prefetch: () => Promise.resolve(),
+  beforePopState: () => {},
+  isFallback: false,
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false
+};
+
+// Override the useRouter implementation
+const useRouter = () => mockRouter;
+Router.useRouter = useRouter;
+
+export default function ComponentPreview() {
+  const [state] = useParentState({
+    isSelected: {
+      type: "boolean",
+      value: false,
+      label: "Is Selected"
+    },
+    thread: {
+      type: "object",
+      value: {
+        id: "123",
+        title: "Example Thread",
+        organization_slug: "demo-org",
+        latest_message_truncated: "This is the latest message in the thread...",
+        last_message_at: new Date().toISOString(),
+        unread_count: 2,
+        avatar_urls: {
+          xs: "https://placekitten.com/32/32",
+          sm: "https://placekitten.com/64/64",
+          base: "https://placekitten.com/128/128",
+          lg: "https://placekitten.com/256/256",
+          xl: "https://placekitten.com/512/512",
+          xxl: "https://placekitten.com/1024/1024"
+        },
+        group: false,
+        channel_name: "general",
+        path: "/demo-org/chat/123",
+        call_room_url: null,
+        remote_call_room_id: null,
+        integration_dm: false,
+        active_call: null,
+        deactivated_members: [],
+        type_name: "thread",
+        project_id: null,
+        manually_marked_unread: false,
+        viewer_has_favorited: false,
+        other_members: [],
+        viewer_is_thread_member: true,
+        viewer_can_manage_integrations: false,
+        viewer_can_delete: false,
+        viewer_can_force_notification: false,
+        image_url: null
+      },
+      label: "Thread Data"
+    }
+  });
+
+  return (
+    <ScopeProvider>
+      <ExistingThreadListItem 
+        thread={state.thread.value}
+        isSelected={state.isSelected.value}
+      />
+    </ScopeProvider>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: Let me check the QueryNormalizerProvider implementation and add it to the preview.
+
+
+Assistant: Now I'll update the preview file to include the QueryNormalizerProvider with the necessary configuration:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx">
+<change>
+<description>Add QueryNormalizerProvider with required configuration</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { ExistingThreadListItem } from '../../components/Chat/ExistingThreadListItem';
+import { ScopeProvider } from '../../contexts/scope';
+import { QueryNormalizerProvider } from '../../utils/normy/QueryNormalizerProvider';
+import { QueryClient } from '@tanstack/react-query';
+
+// Override the useRouter hook
+import Router from 'next/router';
+
+const mockRouter = {
+  query: { org: 'demo-org' },
+  isReady: true,
+  asPath: '/demo-org/chat',
+  pathname: '/demo-org/chat',
+  route: '/demo-org/chat',
+  basePath: '',
+  events: {
+    emit: () => {},
+    off: () => {},
+    on: () => {}
+  },
+  push: () => Promise.resolve(true),
+  replace: () => Promise.resolve(true),
+  reload: () => {},
+  back: () => {},
+  prefetch: () => Promise.resolve(),
+  beforePopState: () => {},
+  isFallback: false,
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false
+};
+
+// Override the useRouter implementation
+const useRouter = () => mockRouter;
+Router.useRouter = useRouter;
+
+// Create a new QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+export default function ComponentPreview() {
+  const [state] = useParentState({
+    isSelected: {
+      type: "boolean",
+      value: false,
+      label: "Is Selected"
+    },
+    thread: {
+      type: "object",
+      value: {
+        id: "123",
+        title: "Example Thread",
+        organization_slug: "demo-org",
+        latest_message_truncated: "This is the latest message in the thread...",
+        last_message_at: new Date().toISOString(),
+        unread_count: 2,
+        avatar_urls: {
+          xs: "https://placekitten.com/32/32",
+          sm: "https://placekitten.com/64/64",
+          base: "https://placekitten.com/128/128",
+          lg: "https://placekitten.com/256/256",
+          xl: "https://placekitten.com/512/512",
+          xxl: "https://placekitten.com/1024/1024"
+        },
+        group: false,
+        channel_name: "general",
+        path: "/demo-org/chat/123",
+        call_room_url: null,
+        remote_call_room_id: null,
+        integration_dm: false,
+        active_call: null,
+        deactivated_members: [],
+        type_name: "thread",
+        project_id: null,
+        manually_marked_unread: false,
+        viewer_has_favorited: false,
+        other_members: [],
+        viewer_is_thread_member: true,
+        viewer_can_manage_integrations: false,
+        viewer_can_delete: false,
+        viewer_can_force_notification: false,
+        image_url: null
+      },
+      label: "Thread Data"
+    }
+  });
+
+  return (
+    <QueryNormalizerProvider queryClient={queryClient} normalizerConfig={{ normalize: true }}>
+      <ScopeProvider>
+        <ExistingThreadListItem 
+          thread={state.thread.value}
+          isSelected={state.isSelected.value}
+        />
+      </ScopeProvider>
+    </QueryNormalizerProvider>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Added import for QueryNormalizerProvider and QueryClient
+2. Created a new QueryClient instance with some default options
+3. Wrapped the component with QueryNormalizerProvider and provided the required queryClient prop
+4. Added basic normalizerConfig with normalize set to true
+5. Kept all other functionality intact including the ScopeProvider and router mock
+
+This should resolve the "No QueryNormalizer set" error while maintaining the exact functionality of the component. The component will continue to look and behave exactly as it does in the codebase.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/ExistingThreadListItem-700cfa4e.tsx
+
+All changes applied successfully. Checking for errors...

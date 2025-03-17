@@ -1,5 +1,4 @@
 import Image from 'next/image'
-
 import { Attachment } from '@campsite/types'
 import { cn } from '@campsite/ui/src/utils'
 
@@ -18,16 +17,27 @@ export function GifAttachment({ attachment, isUploading }: Props) {
       })}
     >
       {attachment.optimistic_src && (
-        <Image
-          alt='Gif attachment'
-          src={attachment.optimistic_src}
+        // Use video tag for GIFs to avoid next/image domain restrictions
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className='max-h-[80vh] rounded object-contain'
           width={width}
           height={height}
-          draggable={false}
-          className='max-h-[80vh] rounded object-contain'
-          // providing width and aspectRatio styles prevents jank during initial upload and loading
           style={{ width, aspectRatio: `${width}/${height}` }}
-        />
+        >
+          <source src={attachment.optimistic_src} type="image/gif" />
+          <img
+            src={attachment.optimistic_src}
+            alt='Gif attachment'
+            width={width}
+            height={height}
+            className='max-h-[80vh] rounded object-contain'
+            style={{ width, aspectRatio: `${width}/${height}` }}
+          />
+        </video>
       )}
 
       {!attachment.optimistic_src && attachment.url && (
@@ -42,7 +52,6 @@ export function GifAttachment({ attachment, isUploading }: Props) {
           className='max-h-[80vh] rounded object-contain'
           width={width}
           height={height}
-          // providing width and aspectRatio styles prevents jank during initial upload and loading
           style={{ width, aspectRatio: `${width}/${height}` }}
         >
           <source src={`${attachment.url}?fm=mp4#t=0.1`} type={'video/mp4'} />

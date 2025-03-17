@@ -76,6 +76,7 @@ export function Reactions({ reactions, onReactionSelect, getClasses }: Props) {
                       )}
                       {reaction.custom_content && (
                         <Image
+                          unoptimized
                           className='mb-px h-[15px] w-[15px] object-contain'
                           src={reaction.custom_content.file_url}
                           alt={reaction.custom_content.name}

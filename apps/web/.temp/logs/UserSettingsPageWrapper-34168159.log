@@ -1,0 +1,837 @@
+System: You are an expert React developer working on a project that renders preview components.
+
+## Task
+Your task is to fix the errors.
+
+## Role & Capabilities
+- You are a **component error fixing assistant**
+- You can read files, make edits, and use tools to diagnose issues
+- You have access to browser errors and TypeScript errors
+
+## Tools Available
+1. **getFile** (Using tool call) - Read contents of project files
+2. **globTool** (Using tool call) - Find files matching a glob pattern
+3. **grepTool** (Using tool call) - Search for regex patterns in files using ripgrep
+4. **File Editing** (Using xml tags in your response) - Make changes to fix errors using XML format
+
+## File Edit Format
+When you want to edit a file, use this exact XML format:
+
+<file path="path/to/file">
+  <change>
+    <description>Brief explanation of what you're changing</description>
+    <content>
+// Your complete file content here
+    </content>
+  </change>
+</file>
+
+## Important Rules
+1. Only update a file if you know its contents. Use getFile tool to read first.
+2. Most errors can be fixed by updating the preview file. Only update other files if necessary.
+3. Provide complete file content - do not use placeholders or ellipses.
+4. Always include necessary imports and dependencies.
+5. When making changes:
+   - Add all required import statements
+   - Include complete component code
+   - Ensure proper TypeScript types
+   - Handle all edge cases
+6. It is very important that the component is rendered exactly as it is writting in the codebase. Do not mock or fake the component (because then it may look different) but you can change the component code to fix the error.
+7. DO NOT MOCK OR FAKE THE COMPONENT ITSELF. KEEP TRYING UNTIL THE ERROR IS FIXED BUT YOU MUST NOT CREATE A FAKE SIMPLIFIED VERSION OF THE COMPONENT.
+8. DO NOT REMOVE CSS STYLES. Its important that the component looks exactly as it is in the codebase and removing css will make it look different.
+
+
+## Error Handling Process
+1. Read and understand the error message (TypeScript or runtime errors)
+2. Use getFile to examine relevant files
+3. Make targeted fixes using the XML format
+4. If the error is caused by the fact that a provider is missing. In these cases, find the provider and add it to the preview file.
+5. If the error persists, try different fixes. Sometimes the error is caused by external dependencies that we dont' have access to. In those cases, you can try to fix the error by mocking,removing or try catching.
+6. Since we are running this project in a preview environemnt, no process.env is available. You can fix this by hardcoding the variables in the file they are defined in.
+7. REMEMBER, your resonse must have <file> tags with the file path and content if you want to edit a file.
+8. DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+User: An error occurred when rendering the component route at UserSettingsPageWrapper-34168159.tsx
+Error:
+
+# Error 1
+
+## Error Message
+SyntaxError: Duplicate export of 'default'SyntaxError: Duplicate export of 'default'
+
+## Stack Trace
+```
+
+```
+
+## Component Stack
+```
+
+    at Lazy
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { UserSettingsPageWrapper } from '../../components/UserSettings/PageWrapper';
+// Mock the next/router since we can't use jest
+const mockRouter = {
+  pathname: '/me/settings',
+  push: () => {},
+  replace: () => {},
+};
+
+// Mock the useGetCurrentUser hook
+const mockCurrentUser = {
+  avatar_urls: ['https://placekitten.com/200/200'],
+  display_name: 'John Doe',
+};
+
+const MockNextRouter = React.createContext({ pathname: '' });
+
+export default function ComponentPreview() {
+  return (
+    <MockNextRouter.Provider value={mockRouter}>
+      <UserSettingsPageWrapper>
+        <div className="p-4">
+          <h1>Settings Content</h1>
+          <p>This is some example content that would appear in the settings page.</p>
+        </div>
+      </UserSettingsPageWrapper>
+    </MockNextRouter.Provider>
+  );
+}
+
+// Mock the required hooks
+import('next/router').then((module) => {
+  module.useRouter = () => mockRouter;
+});
+
+// Mock the useGetCurrentUser hook
+window.useGetCurrentUser = () => ({
+  data: mockCurrentUser,
+  isLoading: false,
+  error: null,
+});
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: Let me help fix the duplicate export error. The error occurs because there's both a default export in the file and potentially another export being added through the dynamic import. Let me check the file and make the necessary corrections.
+
+Let me fix this by properly structuring the exports and mocks:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx">
+  <change>
+    <description>Restructure the file to avoid duplicate default exports and properly set up mocks</description>
+    <content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { UserSettingsPageWrapper } from '../../components/UserSettings/PageWrapper';
+
+// Mock the next/router since we can't use jest
+const mockRouter = {
+  pathname: '/me/settings',
+  push: () => {},
+  replace: () => {},
+};
+
+// Mock the useGetCurrentUser hook
+const mockCurrentUser = {
+  avatar_urls: ['https://placekitten.com/200/200'],
+  display_name: 'John Doe',
+};
+
+const MockNextRouter = React.createContext({ pathname: '' });
+
+// Set up mocks before the component renders
+if (typeof window !== 'undefined') {
+  // Mock the router
+  const originalModule = jest.requireActual('next/router');
+  jest.mock('next/router', () => ({
+    ...originalModule,
+    useRouter: () => mockRouter
+  }));
+
+  // Mock the useGetCurrentUser hook
+  window.useGetCurrentUser = () => ({
+    data: mockCurrentUser,
+    isLoading: false,
+    error: null,
+  });
+}
+
+export default function ComponentPreview() {
+  return (
+    <MockNextRouter.Provider value={mockRouter}>
+      <UserSettingsPageWrapper>
+        <div className="p-4">
+          <h1>Settings Content</h1>
+          <p>This is some example content that would appear in the settings page.</p>
+        </div>
+      </UserSettingsPageWrapper>
+    </MockNextRouter.Provider>
+  );
+}
+    </content>
+  </change>
+</file>
+
+The main changes I made:
+1. Removed the dynamic import of 'next/router' that was causing the duplicate export
+2. Consolidated the mocks into a single block that runs before the component
+3. Kept a single default export for the ComponentPreview
+4. Added a check for window to ensure the mocks only run in the browser environment
+5. Used jest.mock for the router instead of dynamic import
+
+The component itself remains unchanged, maintaining its original appearance and functionality. I've just reorganized the mocking structure to avoid the duplicate export error while ensuring all the necessary dependencies are properly mocked.
+
+Let me know if you encounter any other errors and I'll help you resolve them!
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at UserSettingsPageWrapper-34168159.tsx
+Error:
+
+# Error 1
+
+## Error Message
+ReferenceError: jest is not definedReferenceError: jest is not defined
+
+## Stack Trace
+```
+    at /.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx:17:26
+```
+
+## Component Stack
+```
+
+    at Lazy
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { UserSettingsPageWrapper } from '../../components/UserSettings/PageWrapper';
+
+// Mock the next/router since we can't use jest
+const mockRouter = {
+  pathname: '/me/settings',
+  push: () => {},
+  replace: () => {},
+};
+
+// Mock the useGetCurrentUser hook
+const mockCurrentUser = {
+  avatar_urls: ['https://placekitten.com/200/200'],
+  display_name: 'John Doe',
+};
+
+const MockNextRouter = React.createContext({ pathname: '' });
+
+// Set up mocks before the component renders
+if (typeof window !== 'undefined') {
+  // Mock the router
+  const originalModule = jest.requireActual('next/router');
+  jest.mock('next/router', () => ({
+    ...originalModule,
+    useRouter: () => mockRouter
+  }));
+
+  // Mock the useGetCurrentUser hook
+  window.useGetCurrentUser = () => ({
+    data: mockCurrentUser,
+    isLoading: false,
+    error: null,
+  });
+}
+
+export default function ComponentPreview() {
+  return (
+    <MockNextRouter.Provider value={mockRouter}>
+      <UserSettingsPageWrapper>
+        <div className="p-4">
+          <h1>Settings Content</h1>
+          <p>This is some example content that would appear in the settings page.</p>
+        </div>
+      </UserSettingsPageWrapper>
+    </MockNextRouter.Provider>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I apologize for using Jest in the previous solution. Since we're in a preview environment and not in a test environment, let's modify the file to mock the router without using Jest:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx">
+  <change>
+    <description>Remove Jest-related code and properly mock the router</description>
+    <content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { UserSettingsPageWrapper } from '../../components/UserSettings/PageWrapper';
+
+// Mock the next/router since we can't use jest
+const mockRouter = {
+  pathname: '/me/settings',
+  push: () => {},
+  replace: () => {},
+  query: {},
+  asPath: '/me/settings',
+  basePath: '',
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false,
+  events: {
+    on: () => {},
+    off: () => {},
+    emit: () => {},
+  },
+};
+
+// Mock the useGetCurrentUser hook
+const mockCurrentUser = {
+  avatar_urls: ['https://placekitten.com/200/200'],
+  display_name: 'John Doe',
+};
+
+// Create a mock Next.js router context
+const RouterContext = React.createContext(mockRouter);
+
+// Override the next/router module
+if (typeof window !== 'undefined') {
+  // Mock the router
+  window.useRouter = () => mockRouter;
+
+  // Mock the useGetCurrentUser hook
+  window.useGetCurrentUser = () => ({
+    data: mockCurrentUser,
+    isLoading: false,
+    error: null,
+  });
+}
+
+export default function ComponentPreview() {
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <UserSettingsPageWrapper>
+        <div className="p-4">
+          <h1>Settings Content</h1>
+          <p>This is some example content that would appear in the settings page.</p>
+        </div>
+      </UserSettingsPageWrapper>
+    </RouterContext.Provider>
+  );
+}
+    </content>
+  </change>
+</file>
+
+The changes I made:
+1. Removed all Jest-related code
+2. Expanded the mockRouter object to include all commonly used Next.js router properties
+3. Created a RouterContext to properly provide the router context to child components
+4. Simplified the mocking approach by directly setting properties on the window object
+5. Kept the component structure exactly the same to maintain its original appearance and functionality
+
+The component itself remains unchanged, and we're just providing the necessary context and mocks for it to work in the preview environment. Let me know if you encounter any other errors!
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at UserSettingsPageWrapper-34168159.tsx
+Error:
+
+# Error 1
+
+## Error Message
+Error: useScope must be used within a ScopeProviderError: useScope must be used within a ScopeProvider
+
+## Stack Trace
+```
+    at useScope (/contexts/scope.tsx:59:11)
+    at useScrollRestoration (/hooks/useScrollRestoration.ts:14:21)
+    at ScrollableContainer (/components/ScrollableContainer.tsx:13:3)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at mountIndeterminateComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14949:21)
+    at beginWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:15930:22)
+    at beginWork$1 (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19774:22)
+    at performUnitOfWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19222:20)
+    at workLoopSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19158:13)
+    at renderRootSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19137:15)
+```
+
+## Component Stack
+```
+
+    at ScrollableContainer (/components/ScrollableContainer.tsx:6:3)
+    at UserSettingsPageWrapper (/components/UserSettings/PageWrapper.tsx:9:11)
+    at ComponentPreview
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:59:3)
+```
+
+              
+# Error 2
+
+## Error Message
+Error: useScope must be used within a ScopeProviderError: useScope must be used within a ScopeProvider
+
+## Stack Trace
+```
+    at useScope (/contexts/scope.tsx:59:11)
+    at ProfileDropdown (/components/NavigationSidebar/ProfileDropdown.tsx:51:21)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at mountIndeterminateComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14949:21)
+    at beginWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:15930:22)
+    at beginWork$1 (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19774:22)
+    at performUnitOfWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19222:20)
+    at workLoopSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19158:13)
+    at renderRootSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19137:15)
+    at recoverFromConcurrentError (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:18754:28)
+```
+
+## Component Stack
+```
+
+    at ScrollableContainer (/components/ScrollableContainer.tsx:6:3)
+    at UserSettingsPageWrapper (/components/UserSettings/PageWrapper.tsx:9:11)
+    at ComponentPreview
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:59:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { UserSettingsPageWrapper } from '../../components/UserSettings/PageWrapper';
+
+// Mock the next/router since we can't use jest
+const mockRouter = {
+  pathname: '/me/settings',
+  push: () => {},
+  replace: () => {},
+  query: {},
+  asPath: '/me/settings',
+  basePath: '',
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false,
+  events: {
+    on: () => {},
+    off: () => {},
+    emit: () => {},
+  },
+};
+
+// Mock the useGetCurrentUser hook
+const mockCurrentUser = {
+  avatar_urls: ['https://placekitten.com/200/200'],
+  display_name: 'John Doe',
+};
+
+// Create a mock Next.js router context
+const RouterContext = React.createContext(mockRouter);
+
+// Override the next/router module
+if (typeof window !== 'undefined') {
+  // Mock the router
+  window.useRouter = () => mockRouter;
+
+  // Mock the useGetCurrentUser hook
+  window.useGetCurrentUser = () => ({
+    data: mockCurrentUser,
+    isLoading: false,
+    error: null,
+  });
+}
+
+export default function ComponentPreview() {
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <UserSettingsPageWrapper>
+        <div className="p-4">
+          <h1>Settings Content</h1>
+          <p>This is some example content that would appear in the settings page.</p>
+        </div>
+      </UserSettingsPageWrapper>
+    </RouterContext.Provider>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I see that the component requires a ScopeProvider from the context. Let me check the scope context and add it to the preview.
+
+
+Assistant: Now I'll update the preview file to include the ScopeProvider with the necessary mocks:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx">
+  <change>
+    <description>Add ScopeProvider with necessary mocks</description>
+    <content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { UserSettingsPageWrapper } from '../../components/UserSettings/PageWrapper';
+import { ScopeProvider } from '../../contexts/scope';
+
+// Mock the next/router since we can't use jest
+const mockRouter = {
+  pathname: '/me/settings',
+  push: () => {},
+  replace: () => {},
+  query: { org: 'test-org' }, // Added org to query
+  asPath: '/me/settings',
+  basePath: '',
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false,
+  events: {
+    on: () => {},
+    off: () => {},
+    emit: () => {},
+  },
+};
+
+// Mock the useGetCurrentUser hook
+const mockCurrentUser = {
+  avatar_urls: ['https://placekitten.com/200/200'],
+  display_name: 'John Doe',
+};
+
+// Create a mock Next.js router context
+const RouterContext = React.createContext(mockRouter);
+
+// Override the next/router module
+if (typeof window !== 'undefined') {
+  // Mock the router
+  window.useRouter = () => mockRouter;
+
+  // Mock the useGetCurrentUser hook
+  window.useGetCurrentUser = () => ({
+    data: mockCurrentUser,
+    isLoading: false,
+    error: null,
+  });
+
+  // Mock process.env
+  window.process = {
+    ...window.process,
+    env: {
+      NODE_ENV: 'development'
+    }
+  };
+}
+
+export default function ComponentPreview() {
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <ScopeProvider>
+        <UserSettingsPageWrapper>
+          <div className="p-4">
+            <h1>Settings Content</h1>
+            <p>This is some example content that would appear in the settings page.</p>
+          </div>
+        </UserSettingsPageWrapper>
+      </ScopeProvider>
+    </RouterContext.Provider>
+  );
+}
+    </content>
+  </change>
+</file>
+
+The changes I made:
+1. Imported the ScopeProvider from the contexts/scope
+2. Added the ScopeProvider wrapper around the component
+3. Added org to the mockRouter query to provide the necessary scope context
+4. Added process.env mock for the scope cookies functionality
+5. Kept the component structure exactly the same to maintain its original appearance and functionality
+
+The component itself remains unchanged, and we're just providing the necessary ScopeProvider context that it requires. Let me know if you encounter any other errors!
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at UserSettingsPageWrapper-34168159.tsx
+Error:
+
+# Error 1
+
+## Error Message
+Error: No QueryNormalizer set, use QueryNormalizerProvider to set oneError: No QueryNormalizer set, use QueryNormalizerProvider to set one
+
+## Stack Trace
+```
+    at useQueryNormalizer (/utils/normy/QueryNormalizerProvider.tsx:27:11)
+    at useCreateNotificationPause (/hooks/useCreateNotificationPause.ts:12:27)
+    at usePauseNotificationMenuItem (/hooks/usePauseNotificationMenuItem.ts:34:47)
+    at ProfileDropdown (/components/NavigationSidebar/ProfileDropdown.tsx:60:38)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at mountIndeterminateComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14949:21)
+    at beginWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:15930:22)
+    at beginWork$1 (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19774:22)
+    at performUnitOfWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19222:20)
+    at workLoopSync (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:19158:13)
+```
+
+## Component Stack
+```
+
+    at ProfileDropdown (/components/NavigationSidebar/ProfileDropdown.tsx:47:3)
+    at div
+    at header
+    at BasicTitlebar (/components/Titlebar/index.tsx:9:3)
+    at div
+    at UserSettingsPageWrapper (/components/UserSettings/PageWrapper.tsx:9:11)
+    at ScopeProvider (/contexts/scope.tsx:32:26)
+    at ComponentPreview
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:59:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { UserSettingsPageWrapper } from '../../components/UserSettings/PageWrapper';
+import { ScopeProvider } from '../../contexts/scope';
+
+// Mock the next/router since we can't use jest
+const mockRouter = {
+  pathname: '/me/settings',
+  push: () => {},
+  replace: () => {},
+  query: { org: 'test-org' }, // Added org to query
+  asPath: '/me/settings',
+  basePath: '',
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false,
+  events: {
+    on: () => {},
+    off: () => {},
+    emit: () => {},
+  },
+};
+
+// Mock the useGetCurrentUser hook
+const mockCurrentUser = {
+  avatar_urls: ['https://placekitten.com/200/200'],
+  display_name: 'John Doe',
+};
+
+// Create a mock Next.js router context
+const RouterContext = React.createContext(mockRouter);
+
+// Override the next/router module
+if (typeof window !== 'undefined') {
+  // Mock the router
+  window.useRouter = () => mockRouter;
+
+  // Mock the useGetCurrentUser hook
+  window.useGetCurrentUser = () => ({
+    data: mockCurrentUser,
+    isLoading: false,
+    error: null,
+  });
+
+  // Mock process.env
+  window.process = {
+    ...window.process,
+    env: {
+      NODE_ENV: 'development'
+    }
+  };
+}
+
+export default function ComponentPreview() {
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <ScopeProvider>
+        <UserSettingsPageWrapper>
+          <div className="p-4">
+            <h1>Settings Content</h1>
+            <p>This is some example content that would appear in the settings page.</p>
+          </div>
+        </UserSettingsPageWrapper>
+      </ScopeProvider>
+    </RouterContext.Provider>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I'll check the QueryNormalizerProvider and add it to our preview. Let me get its implementation first:
+
+
+Assistant: Now I'll update the preview file to include the QueryNormalizerProvider:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx">
+  <change>
+    <description>Add QueryNormalizerProvider with necessary configuration</description>
+    <content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { UserSettingsPageWrapper } from '../../components/UserSettings/PageWrapper';
+import { ScopeProvider } from '../../contexts/scope';
+import { QueryNormalizerProvider } from '../../utils/normy/QueryNormalizerProvider';
+import { QueryClient } from '@tanstack/react-query';
+
+// Create a new QueryClient instance
+const queryClient = new QueryClient();
+
+// Mock the next/router since we can't use jest
+const mockRouter = {
+  pathname: '/me/settings',
+  push: () => {},
+  replace: () => {},
+  query: { org: 'test-org' },
+  asPath: '/me/settings',
+  basePath: '',
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false,
+  events: {
+    on: () => {},
+    off: () => {},
+    emit: () => {},
+  },
+};
+
+// Mock the useGetCurrentUser hook
+const mockCurrentUser = {
+  avatar_urls: ['https://placekitten.com/200/200'],
+  display_name: 'John Doe',
+};
+
+// Create a mock Next.js router context
+const RouterContext = React.createContext(mockRouter);
+
+// Override the next/router module
+if (typeof window !== 'undefined') {
+  // Mock the router
+  window.useRouter = () => mockRouter;
+
+  // Mock the useGetCurrentUser hook
+  window.useGetCurrentUser = () => ({
+    data: mockCurrentUser,
+    isLoading: false,
+    error: null,
+  });
+
+  // Mock process.env
+  window.process = {
+    ...window.process,
+    env: {
+      NODE_ENV: 'development'
+    }
+  };
+}
+
+export default function ComponentPreview() {
+  return (
+    <RouterContext.Provider value={mockRouter}>
+      <QueryNormalizerProvider queryClient={queryClient}>
+        <ScopeProvider>
+          <UserSettingsPageWrapper>
+            <div className="p-4">
+              <h1>Settings Content</h1>
+              <p>This is some example content that would appear in the settings page.</p>
+            </div>
+          </UserSettingsPageWrapper>
+        </ScopeProvider>
+      </QueryNormalizerProvider>
+    </RouterContext.Provider>
+  );
+}
+    </content>
+  </change>
+</file>
+
+The changes I made:
+1. Imported QueryNormalizerProvider and QueryClient
+2. Created a new QueryClient instance
+3. Added QueryNormalizerProvider wrapper around the component with the queryClient prop
+4. Kept the existing providers and maintained the component structure
+5. The component itself remains unchanged to maintain its original appearance and functionality
+
+Let me know if you encounter any other errors!Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx
+
+All changes applied successfully. Checking for errors...
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/UserSettingsPageWrapper-34168159.tsx
+
+All changes applied successfully. Checking for errors...

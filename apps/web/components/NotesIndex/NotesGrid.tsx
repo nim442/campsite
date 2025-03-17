@@ -18,7 +18,7 @@ function NotePreviewThumbnail({ note }: { note: Note }) {
   const baseUrl = note.description_thumbnail_base_url
   const [showPlaceholder, setShowPlaceholder] = useState(true)
   const urlsize = 700
-  const url = `${baseUrl}/${urlsize}/${resolvedTheme}`
+  const url = baseUrl ? `${baseUrl}/${urlsize}/${resolvedTheme}` : '/placeholder.png'
 
   return (
     <div className='dark:bg-elevated dark:hover:bg-tertiary relative h-full w-full overflow-hidden rounded-lg border border-transparent p-4 ring-1 ring-black/5 transition-all dark:border-black dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02),_inset_0_1px_0_rgba(255,255,255,0.04)]'>
@@ -42,18 +42,20 @@ function NotePreviewThumbnail({ note }: { note: Note }) {
         </div>
       )}
 
-      <Image
-        alt={`Text post preview`}
-        src={url}
-        draggable={false}
-        className={cn('relative w-full max-w-full object-contain transition-opacity', {
-          'opacity-0': showPlaceholder
-        })}
-        width={urlsize / 2}
-        height={urlsize / 2}
-        onLoad={() => setShowPlaceholder(false)}
-        onLoadStart={() => setShowPlaceholder(true)}
-      />
+      {baseUrl && (
+        <Image
+          alt={`Text post preview`}
+          src={url}
+          draggable={false}
+          className={cn('relative w-full max-w-full object-contain transition-opacity', {
+            'opacity-0': showPlaceholder
+          })}
+          width={urlsize / 2}
+          height={urlsize / 2}
+          onLoad={() => setShowPlaceholder(false)}
+          onLoadStart={() => setShowPlaceholder(true)}
+        />
+      )}
 
       <div className='dark:from-gray-850 absolute bottom-0 left-px right-px z-[1] h-full rounded-b-lg bg-gradient-to-t from-white via-transparent to-transparent' />
     </div>

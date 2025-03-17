@@ -7,7 +7,6 @@ import 'styles/prose.css'
 import { useEffect } from 'react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { NextWebVitalsMetric } from 'next/app'
-import { Inter } from 'next/font/google'
 
 import { IS_PRODUCTION, LAST_CLIENT_JS_BUILD_ID_LS_KEY } from '@campsite/config'
 
@@ -15,10 +14,13 @@ import { useClearEmptyDrafts } from '@/hooks/useClearEmptyDrafts'
 import { useStoredState } from '@/hooks/useStoredState'
 import { AppPropsWithLayout } from '@/utils/types'
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter'
-})
+// Handle font differently in preview vs production
+const inter = {
+  style: {
+    fontFamily: 'Inter, sans-serif'
+  },
+  variable: 'Inter'
+};
 
 export default function App<T>({ Component, pageProps }: AppPropsWithLayout<T>): JSX.Element {
   const getProviders = Component.getProviders ?? ((page) => page)

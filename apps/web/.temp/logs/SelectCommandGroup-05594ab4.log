@@ -1,0 +1,174 @@
+System: You are an expert React developer working on a project that renders preview components.
+
+## Task
+Your task is to fix the errors.
+
+## Role & Capabilities
+- You are a **component error fixing assistant**
+- You can read files, make edits, and use tools to diagnose issues
+- You have access to browser errors and TypeScript errors
+
+## Tools Available
+1. **getFile** (Using tool call) - Read contents of project files
+2. **globTool** (Using tool call) - Find files matching a glob pattern
+3. **grepTool** (Using tool call) - Search for regex patterns in files using ripgrep
+4. **File Editing** (Using xml tags in your response) - Make changes to fix errors using XML format
+
+## File Edit Format
+When you want to edit a file, use this exact XML format:
+
+<file path="path/to/file">
+  <change>
+    <description>Brief explanation of what you're changing</description>
+    <content>
+// Your complete file content here
+    </content>
+  </change>
+</file>
+
+## Important Rules
+1. Only update a file if you know its contents. Use getFile tool to read first.
+2. Most errors can be fixed by updating the preview file. Only update other files if necessary.
+3. Provide complete file content - do not use placeholders or ellipses.
+4. Always include necessary imports and dependencies.
+5. When making changes:
+   - Add all required import statements
+   - Include complete component code
+   - Ensure proper TypeScript types
+   - Handle all edge cases
+6. It is very important that the component is rendered exactly as it is writting in the codebase. Do not mock or fake the component (because then it may look different) but you can change the component code to fix the error.
+7. DO NOT MOCK OR FAKE THE COMPONENT ITSELF. KEEP TRYING UNTIL THE ERROR IS FIXED BUT YOU MUST NOT CREATE A FAKE SIMPLIFIED VERSION OF THE COMPONENT.
+8. DO NOT REMOVE CSS STYLES. Its important that the component looks exactly as it is in the codebase and removing css will make it look different.
+
+
+## Error Handling Process
+1. Read and understand the error message (TypeScript or runtime errors)
+2. Use getFile to examine relevant files
+3. Make targeted fixes using the XML format
+4. If the error is caused by the fact that a provider is missing. In these cases, find the provider and add it to the preview file.
+5. If the error persists, try different fixes. Sometimes the error is caused by external dependencies that we dont' have access to. In those cases, you can try to fix the error by mocking,removing or try catching.
+6. Since we are running this project in a preview environemnt, no process.env is available. You can fix this by hardcoding the variables in the file they are defined in.
+7. REMEMBER, your resonse must have <file> tags with the file path and content if you want to edit a file.
+8. DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+User: An error occurred when rendering the component route at SelectCommandGroup-05594ab4.tsx
+Error:
+
+# Error 1
+
+## Error Message
+TypeError: Cannot read properties of null (reading 'filter')TypeError: Cannot read properties of null (reading 'filter')
+
+## Stack Trace
+```
+    at /@fs/Users/nim/src/customers/campsite/packages/ui/src/Command/Command.tsx:759:44
+    at cb (/@fs/Users/nim/src/customers/campsite/packages/ui/src/Command/Command.tsx:1048:20)
+    at mountSyncExternalStore (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12537:28)
+    at Object.useSyncExternalStore (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:13224:22)
+    at Object.useSyncExternalStore (/node_modules/.vite/deps/chunk-MML4V2O6.js?v=a04c50ac:1120:29)
+    at useCmdk (/@fs/Users/nim/src/customers/campsite/packages/ui/src/Command/Command.tsx:1049:16)
+    at Group2 (/@fs/Users/nim/src/customers/campsite/packages/ui/src/Command/Command.tsx:758:18)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at updateForwardRef (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14355:28)
+    at beginWork (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:15962:22)
+```
+
+## Component Stack
+```
+
+    at Group2 (/@fs/Users/nim/src/customers/campsite/packages/ui/src/Command/Command.tsx:752:11)
+    at /@fs/Users/nim/src/customers/campsite/packages/ui/src/Select/SelectCommand.tsx:93:55
+    at ComponentPreview (/.temp/dessn-component-routes/SelectCommandGroup-05594ab4.tsx:5:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SelectCommandGroup-05594ab4.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { SelectCommandGroup } from '../../../../packages/ui/src/Select/SelectCommand';
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    className: {
+      type: "string",
+      value: "test-class",
+      label: "Class Name"
+    }
+  });
+
+  return (
+    <SelectCommandGroup className={state.className.value}>
+      <div>Group Content</div>
+    </SelectCommandGroup>
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I'll help fix this error. The error suggests that there's a null value being accessed with `.filter` in the Command component, which is likely because the Command component requires a CommandProvider context.
+
+Let me check the relevant files first.
+
+
+Assistant: I see that the SelectCommandGroup is part of a larger Command component system. The error occurs because the Command components need to be wrapped in a Command.Provider context. Let's modify the preview file to include the necessary provider and structure:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SelectCommandGroup-05594ab4.tsx">
+<change>
+<description>Add Command provider and proper structure for SelectCommandGroup</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { SelectCommandGroup, SelectCommandContainer } from '../../../../packages/ui/src/Select/SelectCommand';
+import { Command } from '../../../../packages/ui/src/Command';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    className: {
+      type: "string",
+      value: "test-class",
+      label: "Class Name"
+    }
+  });
+
+  return (
+    <SelectCommandContainer>
+      <Command>
+        <SelectCommandGroup className={state.className.value}>
+          <div>Group Content</div>
+        </SelectCommandGroup>
+      </Command>
+    </SelectCommandContainer>
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes to fix the error:
+
+1. Added import for SelectCommandContainer and Command components
+2. Wrapped the SelectCommandGroup in proper Command context providers
+3. Used SelectCommandContainer as the outer wrapper
+4. Maintained the original className prop and content
+
+This should resolve the "Cannot read properties of null (reading 'filter')" error by providing the proper Command context that the component needs. The component will maintain its original appearance and functionality while fixing the error.
+
+The error was occurring because the Command component internally uses a context to manage its state, and the filter operation was being called on a null value because this context was missing. By adding the proper providers, we ensure that the component has access to all the required context and state management.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/SelectCommandGroup-05594ab4.tsx
+
+All changes applied successfully. Checking for errors...

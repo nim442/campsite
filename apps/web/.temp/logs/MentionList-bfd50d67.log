@@ -1,0 +1,753 @@
+System: You are an expert React developer working on a project that renders preview components.
+
+## Task
+Your task is to fix the errors.
+
+## Role & Capabilities
+- You are a **component error fixing assistant**
+- You can read files, make edits, and use tools to diagnose issues
+- You have access to browser errors and TypeScript errors
+
+## Tools Available
+1. **getFile** (Using tool call) - Read contents of project files
+2. **globTool** (Using tool call) - Find files matching a glob pattern
+3. **grepTool** (Using tool call) - Search for regex patterns in files using ripgrep
+4. **File Editing** (Using xml tags in your response) - Make changes to fix errors using XML format
+
+## File Edit Format
+When you want to edit a file, use this exact XML format:
+
+<file path="path/to/file">
+  <change>
+    <description>Brief explanation of what you're changing</description>
+    <content>
+// Your complete file content here
+    </content>
+  </change>
+</file>
+
+## Important Rules
+1. Only update a file if you know its contents. Use getFile tool to read first.
+2. Most errors can be fixed by updating the preview file. Only update other files if necessary.
+3. Provide complete file content - do not use placeholders or ellipses.
+4. Always include necessary imports and dependencies.
+5. When making changes:
+   - Add all required import statements
+   - Include complete component code
+   - Ensure proper TypeScript types
+   - Handle all edge cases
+6. It is very important that the component is rendered exactly as it is writting in the codebase. Do not mock or fake the component (because then it may look different) but you can change the component code to fix the error.
+7. DO NOT MOCK OR FAKE THE COMPONENT ITSELF. KEEP TRYING UNTIL THE ERROR IS FIXED BUT YOU MUST NOT CREATE A FAKE SIMPLIFIED VERSION OF THE COMPONENT.
+8. DO NOT REMOVE CSS STYLES. Its important that the component looks exactly as it is in the codebase and removing css will make it look different.
+
+
+## Error Handling Process
+1. Read and understand the error message (TypeScript or runtime errors)
+2. Use getFile to examine relevant files
+3. Make targeted fixes using the XML format
+4. If the error is caused by the fact that a provider is missing. In these cases, find the provider and add it to the preview file.
+5. If the error persists, try different fixes. Sometimes the error is caused by external dependencies that we dont' have access to. In those cases, you can try to fix the error by mocking,removing or try catching.
+6. Since we are running this project in a preview environemnt, no process.env is available. You can fix this by hardcoding the variables in the file they are defined in.
+7. REMEMBER, your resonse must have <file> tags with the file path and content if you want to edit a file.
+8. DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+User: An error occurred when rendering the component route at MentionList-bfd50d67.tsx
+Error:
+
+# Error 1
+
+## Error Message
+RangeError: Schema is missing its top node type ('doc')RangeError: Schema is missing its top node type ('doc')
+
+## Stack Trace
+```
+    at _NodeType.compile (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:2233:13)
+    at new Schema (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:2335:137)
+    at getSchemaByResolvedExtensions (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:627:10)
+    at new _ExtensionManager (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:1020:19)
+    at Editor.createExtensionManager (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:3711:29)
+    at new Editor (/node_modules/.vite/deps/chunk-5WQXDDSI.js?v=a04c50ac:3571:10)
+    at ComponentPreview (/.temp/dessn-component-routes/MentionList-bfd50d67.tsx:37:18)
+    at renderWithHooks (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:12199:26)
+    at updateFunctionComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14605:28)
+    at mountLazyComponent (/node_modules/.vite/deps/chunk-Z4KMHNW7.js?v=a04c50ac:14856:23)
+```
+
+## Component Stack
+```
+
+    at ComponentPreview (/.temp/dessn-component-routes/MentionList-bfd50d67.tsx:6:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/MentionList-bfd50d67.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { MentionList } from '../../components/MarkdownEditor/MentionList';
+import { Editor } from '@tiptap/core';
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    },
+    defaultMentions: {
+      type: "object",
+      value: [{
+        id: "1",
+        role: "member",
+        user: {
+          id: "1",
+          display_name: "John Doe",
+          username: "johndoe",
+          avatar_urls: {
+            xs: "https://placeholder.com/30x30",
+            sm: "https://placeholder.com/40x40",
+            base: "https://placeholder.com/50x50",
+            lg: "https://placeholder.com/60x60",
+            xl: "https://placeholder.com/70x70",
+            xxl: "https://placeholder.com/80x80"
+          },
+          integration: false,
+          notifications_paused: false,
+          email: "john@example.com"
+        }
+      }],
+      label: "Default Mentions"
+    }
+  });
+
+  // Create a mock editor instance
+  const editor = new Editor({
+    extensions: [],
+    content: '',
+  });
+
+  return (
+    <MentionList 
+      editor={editor}
+      modal={state.modal.value}
+      defaultMentions={state.defaultMentions.value}
+    />
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: I'll help fix this error. The error indicates that the Editor schema is missing its top node type ('doc'). This typically happens when the required extensions for the TipTap editor are not properly configured. Let me check the MentionList component first to understand what extensions are needed.
+
+
+Assistant: I see the issue now. The component requires the Mention extension and proper schema setup. Let me check the Mention extension:
+
+
+Assistant: I understand the problem now. The Editor needs to be properly configured with the required extensions, including the basic schema and the Mention extension. Let's fix the preview file:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/MentionList-bfd50d67.tsx">
+<change>
+<description>Configure Editor with required extensions including Document, Text, and Mention</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { MentionList } from '../../components/MarkdownEditor/MentionList';
+import { Editor } from '@tiptap/core';
+import Document from '@tiptap/extension-document';
+import Text from '@tiptap/extension-text';
+import Paragraph from '@tiptap/extension-paragraph';
+import { Node } from '@tiptap/core';
+
+// Create a basic Mention extension for the preview
+const Mention = Node.create({
+  name: 'mention',
+  group: 'inline',
+  inline: true,
+  selectable: false,
+  atom: true,
+
+  addAttributes() {
+    return {
+      id: { default: null },
+      label: { default: null },
+      username: { default: null },
+      role: { default: 'member' },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'span[data-mention]',
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['span', { 'data-mention': '', ...HTMLAttributes }, '@' + (HTMLAttributes.label || HTMLAttributes.username)];
+  },
+});
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    },
+    defaultMentions: {
+      type: "object",
+      value: [{
+        id: "1",
+        role: "member",
+        user: {
+          id: "1",
+          display_name: "John Doe",
+          username: "johndoe",
+          avatar_urls: {
+            xs: "https://placeholder.com/30x30",
+            sm: "https://placeholder.com/40x40",
+            base: "https://placeholder.com/50x50",
+            lg: "https://placeholder.com/60x60",
+            xl: "https://placeholder.com/70x70",
+            xxl: "https://placeholder.com/80x80"
+          },
+          integration: false,
+          notifications_paused: false,
+          email: "john@example.com"
+        }
+      }],
+      label: "Default Mentions"
+    }
+  });
+
+  // Create editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      Document,
+      Paragraph,
+      Text,
+      Mention,
+    ],
+    content: '<p></p>',
+  });
+
+  return (
+    <MentionList 
+      editor={editor}
+      modal={state.modal.value}
+      defaultMentions={state.defaultMentions.value}
+    />
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes to fix the error:
+
+1. Added the required basic TipTap extensions:
+   - Document (required for the top-level schema)
+   - Text (for text content)
+   - Paragraph (for block nodes)
+
+2. Created a basic Mention extension that matches the structure expected by the MentionList component. This extension provides the necessary schema configuration for mentions.
+
+3. Configured the Editor with all required extensions and provided an initial empty paragraph as content.
+
+The error "Schema is missing its top node type ('doc')" should now be resolved because we've added the Document extension which provides the 'doc' node type that TipTap requires as the root of its schema.
+
+This maintains the original functionality of the MentionList component while providing the necessary editor configuration to make it work in the preview environment. The component will render exactly as it does in the main application, just with the minimal required editor setup.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/MentionList-bfd50d67.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: TypeScript errors found in the component at MentionList-bfd50d67.tsx
+Errors:
+TypeScript Errors:
+Line 5, Column 22: Cannot find module '@tiptap/extension-document' or its corresponding type declarations.
+Line 6, Column 18: Cannot find module '@tiptap/extension-text' or its corresponding type declarations.
+Line 7, Column 23: Cannot find module '@tiptap/extension-paragraph' or its corresponding type declarations.
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/MentionList-bfd50d67.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { MentionList } from '../../components/MarkdownEditor/MentionList';
+import { Editor } from '@tiptap/core';
+import Document from '@tiptap/extension-document';
+import Text from '@tiptap/extension-text';
+import Paragraph from '@tiptap/extension-paragraph';
+import { Node } from '@tiptap/core';
+
+// Create a basic Mention extension for the preview
+const Mention = Node.create({
+  name: 'mention',
+  group: 'inline',
+  inline: true,
+  selectable: false,
+  atom: true,
+
+  addAttributes() {
+    return {
+      id: { default: null },
+      label: { default: null },
+      username: { default: null },
+      role: { default: 'member' },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'span[data-mention]',
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['span', { 'data-mention': '', ...HTMLAttributes }, '@' + (HTMLAttributes.label || HTMLAttributes.username)];
+  },
+});
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    },
+    defaultMentions: {
+      type: "object",
+      value: [{
+        id: "1",
+        role: "member",
+        user: {
+          id: "1",
+          display_name: "John Doe",
+          username: "johndoe",
+          avatar_urls: {
+            xs: "https://placeholder.com/30x30",
+            sm: "https://placeholder.com/40x40",
+            base: "https://placeholder.com/50x50",
+            lg: "https://placeholder.com/60x60",
+            xl: "https://placeholder.com/70x70",
+            xxl: "https://placeholder.com/80x80"
+          },
+          integration: false,
+          notifications_paused: false,
+          email: "john@example.com"
+        }
+      }],
+      label: "Default Mentions"
+    }
+  });
+
+  // Create editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      Document,
+      Paragraph,
+      Text,
+      Mention,
+    ],
+    content: '<p></p>',
+  });
+
+  return (
+    <MentionList 
+      editor={editor}
+      modal={state.modal.value}
+      defaultMentions={state.defaultMentions.value}
+    />
+  );
+}
+</file>
+
+Please fix the TypeScript errors. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: Let me check if we can find what TipTap extensions are actually being used in the project:
+
+
+Assistant: I see that the project is using TipTap extensions from the @campsite/editor package. Let me check the BlockDocument, Text, and Paragraph from there:
+
+
+Assistant: Let's update the preview file to use the extensions from @campsite/editor:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/MentionList-bfd50d67.tsx">
+<change>
+<description>Use TipTap extensions from @campsite/editor package</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { MentionList } from '../../components/MarkdownEditor/MentionList';
+import { Editor, Node } from '@tiptap/core';
+import { BlockDocument } from '@campsite/editor/extensions/BlockDocument';
+import { Text } from '@campsite/editor/extensions/Text';
+import { Paragraph } from '@campsite/editor/extensions/Paragraph';
+
+// Create a basic Mention extension for the preview
+const Mention = Node.create({
+  name: 'mention',
+  group: 'inline',
+  inline: true,
+  selectable: false,
+  atom: true,
+
+  addAttributes() {
+    return {
+      id: { default: null },
+      label: { default: null },
+      username: { default: null },
+      role: { default: 'member' },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'span[data-mention]',
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['span', { 'data-mention': '', ...HTMLAttributes }, '@' + (HTMLAttributes.label || HTMLAttributes.username)];
+  },
+});
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    },
+    defaultMentions: {
+      type: "object",
+      value: [{
+        id: "1",
+        role: "member",
+        user: {
+          id: "1",
+          display_name: "John Doe",
+          username: "johndoe",
+          avatar_urls: {
+            xs: "https://placeholder.com/30x30",
+            sm: "https://placeholder.com/40x40",
+            base: "https://placeholder.com/50x50",
+            lg: "https://placeholder.com/60x60",
+            xl: "https://placeholder.com/70x70",
+            xxl: "https://placeholder.com/80x80"
+          },
+          integration: false,
+          notifications_paused: false,
+          email: "john@example.com"
+        }
+      }],
+      label: "Default Mentions"
+    }
+  });
+
+  // Create editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      BlockDocument,
+      Paragraph,
+      Text,
+      Mention,
+    ],
+    content: '<p></p>',
+  });
+
+  return (
+    <MentionList 
+      editor={editor}
+      modal={state.modal.value}
+      defaultMentions={state.defaultMentions.value}
+    />
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Replaced the direct TipTap extension imports with imports from @campsite/editor/extensions
+2. Using BlockDocument instead of Document since that's what the project uses
+3. Kept the same Mention extension configuration as it's specific to this preview
+4. Maintained all the existing functionality while fixing the TypeScript errors
+
+The component should now work without TypeScript errors while maintaining its original functionality and appearance.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/MentionList-bfd50d67.tsx
+
+All changes applied successfully. Checking for errors...
+
+User: An error occurred when rendering the component route at MentionList-bfd50d67.tsx
+Error:
+
+# Error 1
+
+## Error Message
+SyntaxError: No node type or group 'customBlock' found (in content expression '(block | customBlock)+')SyntaxError: No node type or group 'customBlock' found (in content expression '(block | customBlock)+')
+
+## Stack Trace
+```
+    at TokenStream.err (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1790:11)
+    at resolveName (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1853:12)
+    at parseExprAtom (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1863:17)
+    at parseExprSubscript (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1808:14)
+    at parseExprSeq (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1803:16)
+    at parseExpr (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1796:16)
+    at parseExprAtom (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1858:16)
+    at parseExprSubscript (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1808:14)
+    at parseExprSeq (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1803:16)
+    at parseExpr (/node_modules/.vite/deps/chunk-36UEOX4Q.js?v=a04c50ac:1796:16)
+```
+
+## Component Stack
+```
+
+    at ComponentPreview (/.temp/dessn-component-routes/MentionList-bfd50d67.tsx:34:29)
+    at div
+    at div
+    at ErrorBoundary (/.temp/ErrorBoundary.tsx:5:5)
+    at Suspense
+    at App (/.temp/App.tsx:6:23)
+    at div
+    at f (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:22:25)
+    at $ (/node_modules/.vite/deps/next-themes.js?v=a04c50ac:20:45)
+    at QueryClientProvider (/node_modules/.vite/deps/chunk-DOI3RO4X.js?v=a04c50ac:2791:3)
+    at Wrapper (/.temp/Wrapper.tsx:10:35)
+    at NextJsWrapper (/.temp/NextJsWrapper.tsx:44:3)
+```
+
+              
+
+<file name="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/MentionList-bfd50d67.tsx" type="preview>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { MentionList } from '../../components/MarkdownEditor/MentionList';
+import { Editor, Node } from '@tiptap/core';
+import { BlockDocument } from '@campsite/editor/extensions/BlockDocument';
+import { Text } from '@campsite/editor/extensions/Text';
+import { Paragraph } from '@campsite/editor/extensions/Paragraph';
+
+// Create a basic Mention extension for the preview
+const Mention = Node.create({
+  name: 'mention',
+  group: 'inline',
+  inline: true,
+  selectable: false,
+  atom: true,
+
+  addAttributes() {
+    return {
+      id: { default: null },
+      label: { default: null },
+      username: { default: null },
+      role: { default: 'member' },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'span[data-mention]',
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['span', { 'data-mention': '', ...HTMLAttributes }, '@' + (HTMLAttributes.label || HTMLAttributes.username)];
+  },
+});
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    },
+    defaultMentions: {
+      type: "object",
+      value: [{
+        id: "1",
+        role: "member",
+        user: {
+          id: "1",
+          display_name: "John Doe",
+          username: "johndoe",
+          avatar_urls: {
+            xs: "https://placeholder.com/30x30",
+            sm: "https://placeholder.com/40x40",
+            base: "https://placeholder.com/50x50",
+            lg: "https://placeholder.com/60x60",
+            xl: "https://placeholder.com/70x70",
+            xxl: "https://placeholder.com/80x80"
+          },
+          integration: false,
+          notifications_paused: false,
+          email: "john@example.com"
+        }
+      }],
+      label: "Default Mentions"
+    }
+  });
+
+  // Create editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      BlockDocument,
+      Paragraph,
+      Text,
+      Mention,
+    ],
+    content: '<p></p>',
+  });
+
+  return (
+    <MentionList 
+      editor={editor}
+      modal={state.modal.value}
+      defaultMentions={state.defaultMentions.value}
+    />
+  );
+}
+</file>
+
+Please fix the error. Remember to edit a file, you need to wrap it in <file><change><content> tags with the file path and content.
+REMEMBER, DO NOT CREATE A MOCK OR SIMPLIFIED VERSION OF THE COMPONENT. THE COMPONENT PREVIEW SHOULD LOOK EXACTLY AS IT IS IN THE CODEBASE WITHOUT ANY MODIFICATIONS.
+
+Assistant: The error occurs because BlockDocument expects a 'customBlock' group but we haven't provided any nodes that belong to that group. Let's use the standard Document extension instead since we don't need the custom blocks for the MentionList preview.
+
+
+Assistant: Let's update the preview file to use the standard Document extension:
+
+<file path="/Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/MentionList-bfd50d67.tsx">
+<change>
+<description>Use standard Document extension instead of BlockDocument</description>
+<content>
+import React from 'react';
+import { useParentState } from '../useIframeState';
+import { MentionList } from '../../components/MarkdownEditor/MentionList';
+import { Editor, Node } from '@tiptap/core';
+import { Document } from '@campsite/editor/extensions/Document';
+import { Text } from '@campsite/editor/extensions/Text';
+import { Paragraph } from '@campsite/editor/extensions/Paragraph';
+
+// Create a basic Mention extension for the preview
+const Mention = Node.create({
+  name: 'mention',
+  group: 'inline',
+  inline: true,
+  selectable: false,
+  atom: true,
+
+  addAttributes() {
+    return {
+      id: { default: null },
+      label: { default: null },
+      username: { default: null },
+      role: { default: 'member' },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'span[data-mention]',
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['span', { 'data-mention': '', ...HTMLAttributes }, '@' + (HTMLAttributes.label || HTMLAttributes.username)];
+  },
+});
+
+export default function ComponentPreview() {
+  const [state, setState] = useParentState({
+    modal: {
+      type: "boolean",
+      value: false,
+      label: "Modal"
+    },
+    defaultMentions: {
+      type: "object",
+      value: [{
+        id: "1",
+        role: "member",
+        user: {
+          id: "1",
+          display_name: "John Doe",
+          username: "johndoe",
+          avatar_urls: {
+            xs: "https://placeholder.com/30x30",
+            sm: "https://placeholder.com/40x40",
+            base: "https://placeholder.com/50x50",
+            lg: "https://placeholder.com/60x60",
+            xl: "https://placeholder.com/70x70",
+            xxl: "https://placeholder.com/80x80"
+          },
+          integration: false,
+          notifications_paused: false,
+          email: "john@example.com"
+        }
+      }],
+      label: "Default Mentions"
+    }
+  });
+
+  // Create editor instance with required extensions
+  const editor = new Editor({
+    extensions: [
+      Document,
+      Paragraph,
+      Text,
+      Mention,
+    ],
+    content: '<p></p>',
+  });
+
+  return (
+    <MentionList 
+      editor={editor}
+      modal={state.modal.value}
+      defaultMentions={state.defaultMentions.value}
+    />
+  );
+}
+</content>
+</change>
+</file>
+
+I've made the following changes:
+1. Replaced BlockDocument with the standard Document extension from @campsite/editor/extensions/Document
+2. This Document extension doesn't require the customBlock group, so it should work with the basic schema we need for the MentionList
+3. Kept all other functionality the same
+
+The error about the missing 'customBlock' group should now be resolved while maintaining the original functionality of the MentionList component.
+
+Assistant: Successfully applied changes to:
+- /Users/nim/src/customers/campsite/apps/web/.temp/dessn-component-routes/MentionList-bfd50d67.tsx
+
+All changes applied successfully. Checking for errors...
